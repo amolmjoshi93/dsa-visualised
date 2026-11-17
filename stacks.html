@@ -44,14 +44,17 @@
   <div class="card"><b>📞 Function calls</b><br>When code calls a function, it's pushed on the "call stack". When it returns, it's popped. (That's what a "stack overflow" is!)</div>
 </div>
 
-<h2>Speed at a glance</h2>
-<table class="tbl">
-<tr><th>Operation</th><th>Speed</th></tr>
-<tr><td>Push</td><td><span class="tag g">O(1)</span></td></tr>
-<tr><td>Pop</td><td><span class="tag g">O(1)</span></td></tr>
-<tr><td>Peek at the top</td><td><span class="tag g">O(1)</span></td></tr>
-<tr><td>Find something in the middle</td><td><span class="tag r">O(n)</span> — not what a stack is for</td></tr>
-</table>
+<h2>Time &amp; space complexity</h2>
+<p class="small" style="margin-top:0">n = number of items. Best / average / worst describe how lucky or unlucky the input is.</p>
+<div class="tblwrap"><table class="tbl">
+<tr><th>Operation</th><th>Best</th><th>Average</th><th>Worst</th></tr>
+<tr><td>Push</td><td><span class="tag">O(1)</span></td><td><span class="tag">O(1)</span></td><td><span class="tag">O(1)</span></td></tr>
+<tr><td>Pop</td><td><span class="tag">O(1)</span></td><td><span class="tag">O(1)</span></td><td><span class="tag">O(1)</span></td></tr>
+<tr><td>Peek at the top</td><td><span class="tag">O(1)</span></td><td><span class="tag">O(1)</span></td><td><span class="tag">O(1)</span></td></tr>
+<tr><td>Search for a value</td><td><span class="tag">O(1)</span></td><td><span class="tag">O(n)</span></td><td><span class="tag">O(n)</span></td></tr>
+<tr><td><b>Space</b> (storing n items)</td><td><span class="tag">O(n)</span></td><td><span class="tag">O(n)</span></td><td><span class="tag">O(n)</span></td></tr>
+</table></div>
+<p><b>Space:</b> the stack grows by one slot per item, so n items cost O(n). Real programs have a limited "call stack" — recursing too deep fills it up and causes a <i>stack overflow</i>. The bracket checker above uses at most as many slots as there are opening brackets.</p>
 <div class="callout good"><b>Use it when</b> you need to remember things in order and go back through them newest-first.</div>
 </main>
 <div id="site-footer"></div>

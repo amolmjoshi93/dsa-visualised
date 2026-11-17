@@ -39,13 +39,18 @@
   <div class="card"><b>📦 Dependencies</b><br>Package managers track what depends on what — a graph.</div>
 </div>
 
-<h2>Speed at a glance</h2>
-<table class="tbl">
-<tr><th>Operation</th><th>Speed</th></tr>
-<tr><td>Visit everything with BFS or DFS</td><td><span class="tag g">O(V + E)</span> — each node and edge once</td></tr>
-<tr><td>Check if two nodes are directly connected</td><td><span class="tag g">O(1)</span> with a matrix, <span class="tag">O(degree)</span> with neighbour lists</td></tr>
-</table>
-<p class="small">V = number of nodes (vertices), E = number of edges.</p>
+<h2>Time &amp; space complexity</h2>
+<p class="small" style="margin-top:0">n = number of items. Best / average / worst describe how lucky or unlucky the input is.</p>
+<div class="tblwrap"><table class="tbl">
+<tr><th>Operation</th><th>Adjacency list</th><th>Adjacency matrix</th></tr>
+<tr><td>Space to store the graph</td><td><span class="tag">O(V + E)</span></td><td><span class="tag r">O(V²)</span></td></tr>
+<tr><td>Is there an edge between A and B?</td><td><span class="tag">O(degree)</span></td><td><span class="tag g">O(1)</span></td></tr>
+<tr><td>List all neighbours of a node</td><td><span class="tag">O(degree)</span></td><td><span class="tag">O(V)</span></td></tr>
+<tr><td>Add an edge</td><td><span class="tag g">O(1)</span></td><td><span class="tag g">O(1)</span></td></tr>
+<tr><td>BFS or DFS over the whole graph</td><td><span class="tag">O(V + E)</span></td><td><span class="tag r">O(V²)</span></td></tr>
+<tr><td>Extra memory during BFS / DFS</td><td><span class="tag">O(V)</span></td><td><span class="tag">O(V)</span></td></tr>
+</table></div>
+<p><b>Space:</b> V = nodes, E = edges. An <i>adjacency list</i> (each node keeps a list of its neighbours) costs O(V + E) — great for sparse graphs like road maps, where each city links to only a few others. An <i>adjacency matrix</i> (a V × V grid) costs O(V²) however few edges exist, but answers "are these two connected?" instantly. BFS and DFS also need O(V) extra memory to remember visited nodes plus the queue or stack.</p>
 </main>
 <div id="site-footer"></div>
 <script src="app.js"></script>

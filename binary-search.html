@@ -54,12 +54,13 @@
   <div class="card"><b>🎚️ Debugging by halving</b><br>"Does the bug happen before or after this line?" — same idea.</div>
 </div>
 
-<h2>Speed at a glance</h2>
+<h2>Time &amp; space complexity</h2>
 <table class="tbl">
 <tr><th>Case</th><th>Speed</th></tr>
 <tr><td>Best</td><td><span class="tag g">O(1)</span> — the middle item is the target</td></tr>
 <tr><td>Average / worst</td><td><span class="tag g">O(log n)</span></td></tr>
 <tr><td>Cost of sorting first</td><td><span class="tag r">O(n log n)</span> — worth it if you search many times</td></tr>
+<tr><td>Extra memory</td><td><span class="tag g">O(1)</span> — loop version (O(log n) if written recursively)</td></tr>
 </table>
 
 <div class="callout good"><b>Use it when</b> the data is sorted (or you can sort it once) and you search it many times.</div>

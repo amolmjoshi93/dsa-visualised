@@ -38,14 +38,17 @@
   <div class="card"><b>🚑 Priority queues</b><br>A variation: an emergency room serves the most urgent patient first, not the earliest.</div>
 </div>
 
-<h2>Speed at a glance</h2>
-<table class="tbl">
-<tr><th>Operation</th><th>Speed</th></tr>
-<tr><td>Enqueue (join the back)</td><td><span class="tag g">O(1)</span></td></tr>
-<tr><td>Dequeue (leave the front)</td><td><span class="tag g">O(1)</span></td></tr>
-<tr><td>Peek at the front</td><td><span class="tag g">O(1)</span></td></tr>
-<tr><td>Find a particular person</td><td><span class="tag r">O(n)</span></td></tr>
-</table>
+<h2>Time &amp; space complexity</h2>
+<p class="small" style="margin-top:0">n = number of items. Best / average / worst describe how lucky or unlucky the input is.</p>
+<div class="tblwrap"><table class="tbl">
+<tr><th>Operation</th><th>Best</th><th>Average</th><th>Worst</th></tr>
+<tr><td>Enqueue (join the back)</td><td><span class="tag">O(1)</span></td><td><span class="tag">O(1)</span></td><td><span class="tag">O(1)</span></td></tr>
+<tr><td>Dequeue (leave the front)</td><td><span class="tag">O(1)</span></td><td><span class="tag">O(1)</span></td><td><span class="tag">O(1) <small>(O(n) if built carelessly on a plain array)</small></span></td></tr>
+<tr><td>Peek at the front</td><td><span class="tag">O(1)</span></td><td><span class="tag">O(1)</span></td><td><span class="tag">O(1)</span></td></tr>
+<tr><td>Search for a value</td><td><span class="tag">O(1)</span></td><td><span class="tag">O(n)</span></td><td><span class="tag">O(n)</span></td></tr>
+<tr><td><b>Space</b> (storing n items)</td><td><span class="tag">O(n)</span></td><td><span class="tag">O(n)</span></td><td><span class="tag">O(n)</span></td></tr>
+</table></div>
+<p><b>Space:</b> one slot per waiting item, so O(n). Tip: removing the first item of a plain array shifts everything (O(n)); real queues use a linked list or a "circular buffer" so both ends stay O(1).</p>
 <div class="callout good"><b>Use it when</b> order of arrival matters and fairness is the goal. Queues also power <a href="graphs.html">breadth-first search</a> on graphs.</div>
 </main>
 <div id="site-footer"></div>

@@ -41,14 +41,17 @@
   <div class="card"><b>💎 Ruby Hash / Python dict / JS Map</b><br>All of them are hash tables under the hood.</div>
 </div>
 
-<h2>Speed at a glance</h2>
-<table class="tbl">
-<tr><th>Operation</th><th>Typical</th><th>Worst case</th></tr>
-<tr><td>Store</td><td><span class="tag g">O(1)</span></td><td><span class="tag r">O(n)</span> (everything collides)</td></tr>
-<tr><td>Look up by key</td><td><span class="tag g">O(1)</span></td><td><span class="tag r">O(n)</span></td></tr>
-<tr><td>Delete by key</td><td><span class="tag g">O(1)</span></td><td><span class="tag r">O(n)</span></td></tr>
-<tr><td>Get items in sorted order</td><td colspan="2"><span class="tag r">Not supported</span> — hash tables scatter items on purpose</td></tr>
-</table>
+<h2>Time &amp; space complexity</h2>
+<p class="small" style="margin-top:0">n = number of items. Best / average / worst describe how lucky or unlucky the input is.</p>
+<div class="tblwrap"><table class="tbl">
+<tr><th>Operation</th><th>Best</th><th>Average</th><th>Worst</th></tr>
+<tr><td>Store (insert)</td><td><span class="tag">O(1)</span></td><td><span class="tag">O(1)</span></td><td><span class="tag">O(n) <small>(everything collides)</small></span></td></tr>
+<tr><td>Look up by key</td><td><span class="tag">O(1)</span></td><td><span class="tag">O(1)</span></td><td><span class="tag">O(n)</span></td></tr>
+<tr><td>Delete by key</td><td><span class="tag">O(1)</span></td><td><span class="tag">O(1)</span></td><td><span class="tag">O(n)</span></td></tr>
+<tr><td>Items in sorted order</td><td>—</td><td>n/a</td><td>n/a</td></tr>
+<tr><td><b>Space</b> (storing n items)</td><td><span class="tag">O(n)</span></td><td><span class="tag">O(n)</span></td><td><span class="tag">O(n)</span></td></tr>
+</table></div>
+<p><b>Space:</b> O(n) for the entries, <i>plus</i> spare empty buckets. That wasted room is the price of speed: a table kept about half-empty has very few collisions, so lookups stay near O(1). Packing it fuller saves memory but slows everything down.</p>
 <div class="callout good"><b>Use it when</b> you look things up by a key (names, IDs, words) and don't care about order.</div>
 <div class="callout bad"><b>Avoid it when</b> you need things in sorted order or "all keys between A and F" — use a <a href="trees.html">tree</a>.</div>
 </main>

@@ -41,14 +41,18 @@
   <div class="card"><b>🧠 Memory manager</b><br>Operating systems chain together free blocks of memory in linked lists.</div>
 </div>
 
-<h2>Speed at a glance</h2>
-<table class="tbl">
-<tr><th>Operation</th><th>Speed</th><th>Why</th></tr>
-<tr><td>Add / remove at the front</td><td><span class="tag g">O(1)</span></td><td>Only the head pointer changes</td></tr>
-<tr><td>Add at the end</td><td><span class="tag r">O(n)</span></td><td>Must walk to the last node (unless you also keep a "tail")</td></tr>
-<tr><td>Find a value</td><td><span class="tag r">O(n)</span></td><td>Follow arrows one by one</td></tr>
-<tr><td>Read item number k</td><td><span class="tag r">O(n)</span></td><td>No direct jump, unlike an <a href="arrays.html">array</a></td></tr>
-</table>
+<h2>Time &amp; space complexity</h2>
+<p class="small" style="margin-top:0">n = number of items. Best / average / worst describe how lucky or unlucky the input is.</p>
+<div class="tblwrap"><table class="tbl">
+<tr><th>Operation</th><th>Best</th><th>Average</th><th>Worst</th></tr>
+<tr><td>Add / remove at the front</td><td><span class="tag">O(1)</span></td><td><span class="tag">O(1)</span></td><td><span class="tag">O(1)</span></td></tr>
+<tr><td>Add at the end</td><td><span class="tag">O(n) <small>(O(1) with a tail pointer)</small></span></td><td><span class="tag">O(n)</span></td><td><span class="tag">O(n)</span></td></tr>
+<tr><td>Find a value</td><td><span class="tag">O(1)</span></td><td><span class="tag">O(n)</span></td><td><span class="tag">O(n)</span></td></tr>
+<tr><td>Read item number k</td><td><span class="tag">O(1) <small>(k = 1)</small></span></td><td><span class="tag">O(n)</span></td><td><span class="tag">O(n)</span></td></tr>
+<tr><td>Remove a node you already hold</td><td><span class="tag">O(1)</span></td><td><span class="tag">O(1)</span></td><td><span class="tag">O(1) <small>(doubly linked)</small></span></td></tr>
+<tr><td><b>Space</b> (storing n items)</td><td><span class="tag">O(n)</span></td><td><span class="tag">O(n)</span></td><td><span class="tag">O(n)</span></td></tr>
+</table></div>
+<p><b>Space:</b> still O(n), but each item carries a "next" pointer on top of its value, so a linked list uses more memory per item than an <a href="arrays.html">array</a>. Nodes also sit scattered in memory, which is slower for the computer to walk through than neighbouring slots.</p>
 
 <div class="callout good"><b>Use it when</b> you add and remove at the ends a lot and rarely need "give me item number k".</div>
 <div class="callout bad"><b>Avoid it when</b> you need fast lookups by position — an array is far better.</div>

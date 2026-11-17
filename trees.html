@@ -40,15 +40,17 @@
   <div class="card"><b>🏢 Org charts, family trees, menus</b><br>Anything with "parent and children".</div>
 </div>
 
-<h2>Speed at a glance (balanced tree)</h2>
-<table class="tbl">
-<tr><th>Operation</th><th>Speed</th><th>Why</th></tr>
-<tr><td>Search</td><td><span class="tag g">O(log n)</span></td><td>Halve the candidates each level</td></tr>
-<tr><td>Insert</td><td><span class="tag g">O(log n)</span></td><td>Search for the spot, then attach</td></tr>
-<tr><td>Delete</td><td><span class="tag g">O(log n)</span></td><td>Find it, then re-link</td></tr>
-<tr><td>List everything in sorted order</td><td><span class="tag g">O(n)</span></td><td>Walk the tree left → node → right</td></tr>
-<tr><td>Worst case (lopsided tree)</td><td><span class="tag r">O(n)</span></td><td>Looks like a linked list</td></tr>
-</table>
+<h2>Time &amp; space complexity</h2>
+<p class="small" style="margin-top:0">n = number of items. Best / average / worst describe how lucky or unlucky the input is.</p>
+<div class="tblwrap"><table class="tbl">
+<tr><th>Operation</th><th>Best</th><th>Average</th><th>Worst</th></tr>
+<tr><td>Search</td><td><span class="tag">O(1) <small>(it is the root)</small></span></td><td><span class="tag">O(log n)</span></td><td><span class="tag">O(n) <small>(lopsided tree)</small></span></td></tr>
+<tr><td>Insert</td><td><span class="tag">O(1)</span></td><td><span class="tag">O(log n)</span></td><td><span class="tag">O(n)</span></td></tr>
+<tr><td>Delete</td><td><span class="tag">O(1)</span></td><td><span class="tag">O(log n)</span></td><td><span class="tag">O(n)</span></td></tr>
+<tr><td>List everything in sorted order</td><td><span class="tag">O(n)</span></td><td><span class="tag">O(n)</span></td><td><span class="tag">O(n)</span></td></tr>
+<tr><td><b>Space</b> (storing n items)</td><td><span class="tag">O(n)</span></td><td><span class="tag">O(n)</span></td><td><span class="tag">O(n)</span></td></tr>
+</table></div>
+<p><b>Space:</b> O(n) — each node stores its value plus two child pointers. Walking the tree recursively also needs memory for the current path: about O(log n) if the tree is balanced, up to O(n) if it's lopsided. Self-balancing trees (used in databases) guarantee the O(log n) rows even in the worst case.</p>
 <div class="callout good"><b>Use it when</b> you need fast lookups <i>and</i> want things kept in sorted order, or the data is naturally hierarchical.</div>
 </main>
 <div id="site-footer"></div>

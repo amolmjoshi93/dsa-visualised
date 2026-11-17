@@ -186,3 +186,6 @@ svg .clickable{cursor:pointer}
 .demo .row>label{flex-wrap:wrap;max-width:100%}
 .swipe{display:none;margin:0 0 8px}
 .about p{max-width:70ch}
+.tblwrap{overflow-x:auto;-webkit-overflow-scrolling:touch;margin:8px 0}
+.tbl small{color:var(--muted);font-weight:400}
+@media (max-width:640px){.tblwrap .tbl{min-width:500px}}

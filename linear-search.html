@@ -39,12 +39,13 @@
   <div class="card"><b>💎 <code>list.include?(x)</code></b><br>Ruby's <code>Array#include?</code>, Python's <code>x in list</code> and JS's <code>indexOf</code> all do a linear search.</div>
 </div>
 
-<h2>Speed at a glance</h2>
+<h2>Time &amp; space complexity</h2>
 <table class="tbl">
 <tr><th>Case</th><th>Steps</th><th>When</th></tr>
 <tr><td>Best</td><td><span class="tag g">1</span> — O(1)</td><td>It's the first item</td></tr>
 <tr><td>Average</td><td><span class="tag">n/2</span> — O(n)</td><td>Somewhere in the middle</td></tr>
 <tr><td>Worst</td><td><span class="tag r">n</span> — O(n)</td><td>Last item, or not there at all</td></tr>
+<tr><td>Extra memory</td><td><span class="tag g">O(1)</span></td><td>Just a counter — no copies of the list</td></tr>
 </table>
 <p>For 1,000,000 items, the worst case is a million checks. That's fine once — painful if you do it thousands of times a second.</p>
 

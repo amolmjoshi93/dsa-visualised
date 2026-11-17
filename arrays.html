@@ -43,14 +43,17 @@
   <div class="card"><b>🖼️ Pixels</b><br>A screen is one big array of colour values. Drawing is writing to positions.</div>
 </div>
 
-<h2>Speed at a glance</h2>
-<table class="tbl">
-<tr><th>Operation</th><th>Speed</th><th>Why</th></tr>
-<tr><td>Read by position</td><td><span class="tag g">O(1)</span></td><td>Direct jump</td></tr>
-<tr><td>Add at the end</td><td><span class="tag g">O(1)</span></td><td>Usually just place it in the next slot</td></tr>
-<tr><td>Insert / delete in the middle</td><td><span class="tag r">O(n)</span></td><td>Shift everything after it</td></tr>
-<tr><td>Search by value (unsorted)</td><td><span class="tag r">O(n)</span></td><td>Check every item</td></tr>
-</table>
+<h2>Time &amp; space complexity</h2>
+<p class="small" style="margin-top:0">n = number of items. Best / average / worst describe how lucky or unlucky the input is.</p>
+<div class="tblwrap"><table class="tbl">
+<tr><th>Operation</th><th>Best</th><th>Average</th><th>Worst</th></tr>
+<tr><td>Read by position</td><td><span class="tag">O(1)</span></td><td><span class="tag">O(1)</span></td><td><span class="tag">O(1)</span></td></tr>
+<tr><td>Search by value (unsorted)</td><td><span class="tag">O(1)</span></td><td><span class="tag">O(n)</span></td><td><span class="tag">O(n)</span></td></tr>
+<tr><td>Add at the end</td><td><span class="tag">O(1)</span></td><td><span class="tag">O(1)</span></td><td><span class="tag">O(n) <small>(array must grow)</small></span></td></tr>
+<tr><td>Insert / delete in the middle or front</td><td><span class="tag">O(1) <small>(at the end)</small></span></td><td><span class="tag">O(n)</span></td><td><span class="tag">O(n)</span></td></tr>
+<tr><td><b>Space</b> (storing n items)</td><td><span class="tag">O(n)</span></td><td><span class="tag">O(n)</span></td><td><span class="tag">O(n)</span></td></tr>
+</table></div>
+<p><b>Space:</b> n items need n slots, packed tightly with no extra bookkeeping — the most memory-efficient structure here. The catch: a fixed-size array can waste room (like the 6 empty slots in the demo), and when a growing array runs out of space it copies everything into a bigger one, briefly needing O(n) extra memory.</p>
 
 <div class="callout good"><b>Use it when</b> you mostly read by position or add to the end, and the size is fairly predictable.</div>
 <div class="callout bad"><b>Avoid it when</b> you constantly insert or remove at the front or middle of a big collection. Look at <a href="linked-lists.html">linked lists</a> or <a href="hash-tables.html">hash tables</a> instead.</div>

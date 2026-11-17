@@ -39,6 +39,32 @@
   </div>
 </div>
 
+<h2 id="cheatsheet">4. The Big-O cheat sheet</h2>
+<p>Everything in one place. <b>Time</b> is how the work grows with n items; <b>space</b> is how much extra memory is needed. Green is great, red is slow. Click any name for the full explanation.</p>
+<h3>Data structures (typical cases)</h3>
+<div class="tblwrap"><table class="tbl">
+<tr><th>Structure</th><th>Access</th><th>Search</th><th>Insert</th><th>Delete</th><th>Space</th></tr>
+<tr><td><a href="arrays.html">Array</a></td><td><span class="tag g">O(1)</span></td><td><span class="tag r">O(n)</span></td><td><span class="tag r">O(n)</span></td><td><span class="tag r">O(n)</span></td><td><span class="tag">O(n)</span></td></tr>
+<tr><td><a href="linked-lists.html">Linked list</a></td><td><span class="tag r">O(n)</span></td><td><span class="tag r">O(n)</span></td><td><span class="tag g">O(1) <small>front</small></span></td><td><span class="tag g">O(1) <small>front</small></span></td><td><span class="tag">O(n)</span></td></tr>
+<tr><td><a href="stacks.html">Stack</a></td><td><span class="tag r">O(n) <small>(top: O(1))</small></span></td><td><span class="tag r">O(n)</span></td><td><span class="tag g">O(1)</span></td><td><span class="tag g">O(1)</span></td><td><span class="tag">O(n)</span></td></tr>
+<tr><td><a href="queues.html">Queue</a></td><td><span class="tag r">O(n) <small>(front: O(1))</small></span></td><td><span class="tag r">O(n)</span></td><td><span class="tag g">O(1)</span></td><td><span class="tag g">O(1)</span></td><td><span class="tag">O(n)</span></td></tr>
+<tr><td><a href="hash-tables.html">Hash table</a></td><td>n/a</td><td><span class="tag g">O(1)</span></td><td><span class="tag g">O(1)</span></td><td><span class="tag g">O(1)</span></td><td><span class="tag">O(n)</span></td></tr>
+<tr><td><a href="trees.html">Binary search tree</a> <small>(balanced)</small></td><td><span class="tag g">O(log n)</span></td><td><span class="tag g">O(log n)</span></td><td><span class="tag g">O(log n)</span></td><td><span class="tag g">O(log n)</span></td><td><span class="tag">O(n)</span></td></tr>
+</table></div>
+<p class="small" style="margin-top:8px">Graphs are traversed (BFS / DFS) in O(V + E) time and stored in O(V + E) space as adjacency lists — see <a href="graphs.html">Graphs</a>. Hash tables and trees degrade to O(n) in their worst cases (many collisions, lopsided tree).</p>
+<h3>Searching &amp; sorting algorithms</h3>
+<div class="tblwrap"><table class="tbl">
+<tr><th>Algorithm</th><th>Best</th><th>Average</th><th>Worst</th><th>Extra space</th><th>Stable?</th></tr>
+<tr><td><a href="linear-search.html">Linear search</a></td><td><span class="tag g">O(1)</span></td><td><span class="tag r">O(n)</span></td><td><span class="tag r">O(n)</span></td><td><span class="tag">O(1)</span></td><td>—</td></tr>
+<tr><td><a href="binary-search.html">Binary search</a> <small>(sorted data)</small></td><td><span class="tag g">O(1)</span></td><td><span class="tag g">O(log n)</span></td><td><span class="tag g">O(log n)</span></td><td><span class="tag">O(1)</span></td><td>—</td></tr>
+<tr><td><a href="bubble-sort.html">Bubble sort</a></td><td><span class="tag r">O(n)</span></td><td><span class="tag r">O(n²)</span></td><td><span class="tag r">O(n²)</span></td><td><span class="tag">O(1)</span></td><td>Yes</td></tr>
+<tr><td><a href="selection-sort.html">Selection sort</a></td><td><span class="tag r">O(n²)</span></td><td><span class="tag r">O(n²)</span></td><td><span class="tag r">O(n²)</span></td><td><span class="tag">O(1)</span></td><td>No</td></tr>
+<tr><td><a href="insertion-sort.html">Insertion sort</a></td><td><span class="tag r">O(n)</span></td><td><span class="tag r">O(n²)</span></td><td><span class="tag r">O(n²)</span></td><td><span class="tag">O(1)</span></td><td>Yes</td></tr>
+<tr><td><a href="merge-sort.html">Merge sort</a></td><td><span class="tag">O(n log n)</span></td><td><span class="tag">O(n log n)</span></td><td><span class="tag">O(n log n)</span></td><td><span class="tag">O(n)</span></td><td>Yes</td></tr>
+<tr><td><a href="quick-sort.html">Quick sort</a></td><td><span class="tag">O(n log n)</span></td><td><span class="tag">O(n log n)</span></td><td><span class="tag r">O(n²)</span></td><td><span class="tag">O(log n)</span></td><td>No</td></tr>
+</table></div>
+<p class="small" style="margin-top:8px"><b>Stable</b> = items that compare equal keep their original order.</p>
+
 <h2>The big idea</h2>
 <ul class="tight">
   <li><b>Choosing a good data structure</b> decides which operations are cheap: arrays love "read by position", hash tables love "find by key", trees love "keep sorted and search".</li>
