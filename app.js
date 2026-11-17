@@ -32,7 +32,7 @@ function chrome() {
   const hd = $('#site-header');
   if (hd) hd.innerHTML = `<header class="top"><div class="wrap">
     <a class="brand" href="index.html">🧠 DSA Visualised</a>
-    <nav><a href="why-it-matters.html">Why it matters</a><a href="index.html#ds">Data structures</a><a href="index.html#search">Searching</a><a href="index.html#sort">Sorting</a></nav>
+    <nav><a href="why-it-matters.html">Why it matters</a><a href="index.html#ds">Data structures</a><a href="index.html#search">Searching</a><a href="index.html#sort">Sorting</a><a href="index.html#about">About</a></nav>
   </div></header>`;
   const ft = $('#site-footer');
   if (ft) {
@@ -40,7 +40,7 @@ function chrome() {
     const prev = PAGES[i - 1], next = PAGES[i + 1];
     ft.innerHTML = `<footer class="foot"><div class="wrap">
       <div class="pn">${prev ? `<a href="${prev.f}">← ${prev.t}</a>` : '<span></span>'}${next ? `<a href="${next.f}">${next.t} →</a>` : '<span></span>'}</div>
-      <p class="small">Made for learning — play with every demo, break things, and try again.</p></div></footer>`;
+      <p class="small">Made for learning — play with every demo, break things, and try again.<br>Built by <a href="https://amolmjoshi93.github.io/" target="_blank" rel="noopener">Amol M Joshi</a> · <a href="index.html#about">About this project</a> · <a href="https://amolmjoshi93.github.io/" target="_blank" rel="noopener">See my other work →</a></p></div></footer>`;
   }
   $$('[data-cards]').forEach(el => {
     el.innerHTML = PAGES.filter(p => p.g === el.dataset.cards)

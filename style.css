@@ -185,3 +185,4 @@ svg .clickable{cursor:pointer}
 }
 .demo .row>label{flex-wrap:wrap;max-width:100%}
 .swipe{display:none;margin:0 0 8px}
+.about p{max-width:70ch}
