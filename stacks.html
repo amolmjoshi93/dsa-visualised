@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Stacks – DSA Visualised</title><link rel="stylesheet" href="style.css"></head>
+<body>
+<div id="site-header"></div>
+<main class="page">
+<div class="crumbs"><a href="index.html#ds">Data structures</a> › Stacks</div>
+<h1>🥞 Stacks</h1>
+<p class="lead">A pile where you can only touch the top. The last thing you put on is the first thing you take off.</p>
+
+<div class="callout"><b>Everyday picture:</b> a stack of plates. You add a clean plate on top and you take the top plate when you need one. Nobody pulls a plate from the middle — the pile would fall over. This rule is called <b>LIFO</b>: Last In, First Out.</div>
+
+<h2>Try it: push and pop</h2>
+<div class="demo">
+  <div class="row" style="align-items:flex-end;gap:30px">
+    <div><div class="tagl">top ↓</div><div class="stackbox" id="stack"></div></div>
+    <div style="flex:1;min-width:230px">
+      <div class="msg" id="msg">Push some plates, then pop them. Notice the order they come off.</div>
+      <div class="row">
+        <input type="text" id="val" value="🍽️ A" maxlength="8">
+        <button class="btn primary" id="push">Push</button>
+        <button class="btn" id="pop">Pop</button>
+        <button class="btn" id="peek">Peek</button>
+      </div>
+      <div class="small">Each operation takes <b>1 step</b>, no matter how tall the stack is.</div>
+    </div>
+  </div>
+</div>
+
+<h2>Real-life example: are the brackets balanced?</h2>
+<p>Compilers and code editors must check that every <code>(</code> has a matching <code>)</code>, in the right order. A stack does this beautifully: push every opening bracket; when a closing bracket arrives, it must match the one on top.</p>
+<div class="demo">
+  <div class="row"><input type="text" id="br" value="{[()]}" style="width:220px"> 
+    <button class="btn primary" id="check">Check</button>
+    <button class="btn" data-ex="{[(])}">Try {[(])}</button>
+    <button class="btn" data-ex="((()">Try ((()</button></div>
+  <div class="log" id="log"></div>
+</div>
+
+<h2>Real life</h2>
+<div class="cols">
+  <div class="card"><b>↩️ Undo (Ctrl+Z)</b><br>Every edit is pushed on a stack. Undo pops the most recent one.</div>
+  <div class="card"><b>⬅️ Browser Back button</b><br>Pages you visit are pushed; Back pops the latest.</div>
+  <div class="card"><b>📞 Function calls</b><br>When code calls a function, it's pushed on the "call stack". When it returns, it's popped. (That's what a "stack overflow" is!)</div>
+</div>
+
+<h2>Speed at a glance</h2>
+<table class="tbl">
+<tr><th>Operation</th><th>Speed</th></tr>
+<tr><td>Push</td><td><span class="tag g">O(1)</span></td></tr>
+<tr><td>Pop</td><td><span class="tag g">O(1)</span></td></tr>
+<tr><td>Peek at the top</td><td><span class="tag g">O(1)</span></td></tr>
+<tr><td>Find something in the middle</td><td><span class="tag r">O(n)</span> — not what a stack is for</td></tr>
+</table>
+<div class="callout good"><b>Use it when</b> you need to remember things in order and go back through them newest-first.</div>
+</main>
+<div id="site-footer"></div>
+<script src="app.js"></script>
+<script>
+(() => {
+  let st = [];
+  const msg = t => $('#msg').innerHTML = t;
+  const draw = () => {
+    $('#stack').innerHTML = st.map((v, i) => `<div class="slab ${i === st.length - 1 ? 'top' : ''}">${v}</div>`).join('');
+  };
+  $('#push').onclick = () => {
+    if (st.length >= 7) return msg('Stack is full for this demo (7 plates). Pop something!');
+    const v = $('#val').value.trim() || '🍽️'; st.push(v); draw(); msg(`Pushed <b>${v}</b> on top.`);
+    const m = v.match(/^(.*?)([A-Y])$/); if (m) $('#val').value = m[1] + String.fromCharCode(m[2].charCodeAt(0) + 1);
+  };
+  $('#pop').onclick = () => {
+    if (!st.length) return msg('The stack is empty — nothing to pop!');
+    const v = st.pop(); draw(); msg(`Popped <b>${v}</b> — the most recent one comes off first (LIFO).`);
+  };
+  $('#peek').onclick = () => msg(st.length ? `The top is <b>${st[st.length - 1]}</b>. Peek looks but doesn't remove.` : 'Empty stack.');
+
+  const show = s => s.length ? '[ ' + s.join(' ') + ' ]' : '[ empty ]';
+  function check(str) {
+    const pairs = { ')': '(', ']': '[', '}': '{' }, s = [], log = [];
+    for (const ch of str) {
+      if ('([{'.includes(ch)) { s.push(ch); log.push(`<b>${ch}</b> opens → push. Stack: ${show(s)}`); }
+      else if (pairs[ch]) {
+        if (s[s.length - 1] === pairs[ch]) { s.pop(); log.push(`<b>${ch}</b> closes → top is ${pairs[ch]}, pop. Stack: ${show(s)}`); }
+        else { log.push(`<b>${ch}</b> closes, but the top is ${s.length ? s[s.length - 1] : 'nothing'} → ❌ mismatch`); return log; }
+      }
+    }
+    log.push(s.length ? `❌ Leftover opening brackets: ${show(s)}` : '✅ Stack is empty — perfectly balanced!');
+    return log;
+  }
+  const run = () => $('#log').innerHTML = check($('#br').value).map(l => `<div>${l}</div>`).join('');
+  $('#check').onclick = run;
+  $$('[data-ex]').forEach(b => b.onclick = () => { $('#br').value = b.dataset.ex; run(); });
+  draw(); run();
+})();
+</script>
+</body></html>

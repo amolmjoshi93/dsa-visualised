@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Insertion Sort – DSA Visualised</title><link rel="stylesheet" href="style.css"></head>
+<body>
+<div id="site-header"></div>
+<main class="page">
+<div class="crumbs"><a href="index.html#sort">Sorting</a> › Insertion sort</div>
+<h1>🃏 Insertion Sort</h1>
+<p class="lead">Take items one at a time and slide each into its correct place among the ones already sorted.</p>
+
+<div class="callout"><b>Everyday picture:</b> sorting playing cards in your hand. You pick up a new card and slide it left past the bigger cards until it fits. The cards in your hand are always in order; the cards still on the table aren't yet.</div>
+
+<h2>Watch it</h2>
+<div class="demo"><div data-algo="insertion"></div></div>
+<p>Switch the data to <b>Nearly sorted</b>: insertion sort flies through it, because each new item has barely anywhere to go. This is its superpower.</p>
+
+<h2>How it works</h2>
+<ol class="steps">
+  <li><b>Treat the first item as a sorted "hand" of one card.</b></li>
+  <li><b>Take the next item</b> and compare it with the one to its left.</li>
+  <li><b>If the left one is bigger, swap</b> and keep sliding left. Stop when the left neighbour is smaller (or you reach the start).</li>
+  <li><b>The sorted hand has grown by one.</b> Repeat for every remaining item.</li>
+</ol>
+
+<h2>Real life</h2>
+<div class="cols">
+  <div class="card"><b>🃏 Cards in your hand</b><br>The classic example — most people do this instinctively.</div>
+  <div class="card"><b>🏭 Inside real sorting functions</b><br>Fast hybrid sorts (like Python's Timsort) use insertion sort for short chunks, because it's very quick on small or nearly-sorted data.</div>
+  <div class="card"><b>📥 Live data</b><br>When new items arrive one by one into an already-sorted list.</div>
+</div>
+
+<h2>Speed at a glance</h2>
+<table class="tbl">
+<tr><th>Case</th><th>Speed</th></tr>
+<tr><td>Best (already sorted)</td><td><span class="tag g">O(n)</span></td></tr>
+<tr><td>Average / worst</td><td><span class="tag r">O(n²)</span></td></tr>
+<tr><td>Extra memory</td><td><span class="tag g">O(1)</span></td></tr>
+<tr><td>Stable?</td><td>Yes</td></tr>
+</table>
+
+<div class="callout good"><b>Use it when</b> the list is small, nearly sorted, or items arrive one at a time.</div>
+<div class="callout bad"><b>Avoid it when</b> the list is large and in random order — reversed data is its worst case.</div>
+</main>
+<div id="site-footer"></div>
+<script src="app.js"></script>
+</body></html>

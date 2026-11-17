@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Binary Search – DSA Visualised</title><link rel="stylesheet" href="style.css"></head>
+<body>
+<div id="site-header"></div>
+<main class="page">
+<div class="crumbs"><a href="index.html#search">Searching</a> › Binary search</div>
+<h1>✂️ Binary Search</h1>
+<p class="lead">If the list is <b>sorted</b>, you can throw away half of the remaining items with every single look. That's astonishingly powerful.</p>
+
+<div class="callout"><b>Everyday picture:</b> the number-guessing game. "I'm thinking of a number from 1 to 100." You say 50. "Higher." Now you know it's 51–100 — half the possibilities vanished with one guess. You say 75. "Lower." And so on. You'll always get it within <b>7 guesses</b>. A dictionary works the same way: you open it in the middle, see you've gone too far, and flip back.</div>
+
+<h2>Try it</h2>
+<div class="demo">
+  <div data-mode="binary"></div>
+</div>
+<p>Compare with <a href="linear-search.html">linear search</a> on the same kind of list: it would have taken up to 20 steps here. Binary search needs at most 5.</p>
+
+<h2>How it works</h2>
+<ol class="steps">
+  <li><b>Requirement: the list must be sorted.</b> (See the <a href="index.html#sort">sorting algorithms</a>.)</li>
+  <li><b>Look at the middle item.</b></li>
+  <li><b>Equal to your target?</b> Done. <b>Target is bigger?</b> Ignore the left half. <b>Smaller?</b> Ignore the right half.</li>
+  <li><b>Repeat on the half that's left</b> until you find it or nothing is left.</li>
+</ol>
+
+<h3>In code (JavaScript)</h3>
+<pre style="background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px;overflow:auto"><code>function binarySearch(sorted, target) {
+  let lo = 0, hi = sorted.length - 1;
+  while (lo &lt;= hi) {
+    const mid = Math.floor((lo + hi) / 2);
+    if (sorted[mid] === target) return mid;
+    if (sorted[mid] &lt; target) lo = mid + 1;   // discard left half
+    else hi = mid - 1;                        // discard right half
+  }
+  return -1;
+}</code></pre>
+
+<h2>Why it's so good</h2>
+<table class="tbl">
+<tr><th>Items in the list</th><th>Linear search (worst)</th><th>Binary search (worst)</th></tr>
+<tr><td>100</td><td>100</td><td><span class="tag g">7</span></td></tr>
+<tr><td>1,000</td><td>1,000</td><td><span class="tag g">10</span></td></tr>
+<tr><td>1,000,000</td><td>1,000,000</td><td><span class="tag g">20</span></td></tr>
+<tr><td>1,000,000,000</td><td>1,000,000,000</td><td><span class="tag g">30</span></td></tr>
+</table>
+<p>Doubling the list adds just <b>one</b> extra step. A billion items — fewer than 30 looks.</p>
+
+<h2>Real life</h2>
+<div class="cols">
+  <div class="card"><b>📖 Dictionary &amp; phone book</b><br>Open in the middle, decide which side, repeat.</div>
+  <div class="card"><b>🐛 <code>git bisect</code></b><br>Finds the commit that introduced a bug by repeatedly halving the history.</div>
+  <div class="card"><b>🗄️ Database indexes</b><br>Sorted indexes let a database narrow down millions of rows in a handful of steps.</div>
+  <div class="card"><b>🎚️ Debugging by halving</b><br>"Does the bug happen before or after this line?" — same idea.</div>
+</div>
+
+<h2>Speed at a glance</h2>
+<table class="tbl">
+<tr><th>Case</th><th>Speed</th></tr>
+<tr><td>Best</td><td><span class="tag g">O(1)</span> — the middle item is the target</td></tr>
+<tr><td>Average / worst</td><td><span class="tag g">O(log n)</span></td></tr>
+<tr><td>Cost of sorting first</td><td><span class="tag r">O(n log n)</span> — worth it if you search many times</td></tr>
+</table>
+
+<div class="callout good"><b>Use it when</b> the data is sorted (or you can sort it once) and you search it many times.</div>
+<div class="callout bad"><b>Avoid it when</b> the data is unsorted and changes constantly — keeping it sorted costs more than it saves. A <a href="hash-tables.html">hash table</a> may be better.</div>
+</main>
+<div id="site-footer"></div>
+<script src="app.js"></script>
+</body></html>

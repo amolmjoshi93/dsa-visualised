@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Arrays – DSA Visualised</title><link rel="stylesheet" href="style.css"></head>
+<body>
+<div id="site-header"></div>
+<main class="page">
+<div class="crumbs"><a href="index.html#ds">Data structures</a> › Arrays</div>
+<h1>📦 Arrays</h1>
+<p class="lead">The simplest data structure: items stored side by side in numbered slots. Almost everything else is built on top of it.</p>
+
+<div class="callout"><b>Everyday picture:</b> a row of numbered lockers in a school corridor. If I say "open locker 42", you walk straight to it — you don't check lockers 1 to 41 first. But if someone wants a <i>new</i> locker squeezed in at number 3, every locker after it has to shift one place along.</div>
+
+<h2>Try it</h2>
+<div class="demo">
+  <h3>An array with room for 12 items</h3>
+  <div class="cells" id="arr"></div>
+  <div class="msg" id="msg">Click a button to see what the computer has to do.</div>
+  <div class="row">
+    <label>Value <input type="number" id="val" value="42"></label>
+    <label>Position <input type="number" id="pos" value="2" min="0"></label>
+  </div>
+  <div class="row">
+    <button class="btn" id="read">Read at position</button>
+    <button class="btn" id="ins">Insert at position</button>
+    <button class="btn" id="del">Delete at position</button>
+    <button class="btn" id="find">Find the value</button>
+    <button class="btn" id="reset">Reset</button>
+  </div>
+</div>
+
+<h2>How it works</h2>
+<ol class="steps">
+  <li><b>Items sit next to each other in memory.</b> The computer remembers where the first one lives.</li>
+  <li><b>Position × size = address.</b> To read item 5, it jumps straight to start + 5 slots. That is why reading is instant, however big the array is.</li>
+  <li><b>Inserting or deleting in the middle means shifting.</b> Everything after the change has to move over by one slot to keep the row gap-free.</li>
+  <li><b>Finding a value you only know by content</b> means looking through the boxes one by one (see <a href="linear-search.html">linear search</a>), unless the array is sorted (see <a href="binary-search.html">binary search</a>).</li>
+</ol>
+
+<h2>Real life</h2>
+<div class="cols">
+  <div class="card"><b>📷 Photo gallery</b><br>Photo number 7 is shown instantly because the app jumps to index 6 in a list of photos.</div>
+  <div class="card"><b>🎵 Playlist</b><br>"Play track 12" is an index lookup. Reordering a playlist shifts items.</div>
+  <div class="card"><b>🖼️ Pixels</b><br>A screen is one big array of colour values. Drawing is writing to positions.</div>
+</div>
+
+<h2>Speed at a glance</h2>
+<table class="tbl">
+<tr><th>Operation</th><th>Speed</th><th>Why</th></tr>
+<tr><td>Read by position</td><td><span class="tag g">O(1)</span></td><td>Direct jump</td></tr>
+<tr><td>Add at the end</td><td><span class="tag g">O(1)</span></td><td>Usually just place it in the next slot</td></tr>
+<tr><td>Insert / delete in the middle</td><td><span class="tag r">O(n)</span></td><td>Shift everything after it</td></tr>
+<tr><td>Search by value (unsorted)</td><td><span class="tag r">O(n)</span></td><td>Check every item</td></tr>
+</table>
+
+<div class="callout good"><b>Use it when</b> you mostly read by position or add to the end, and the size is fairly predictable.</div>
+<div class="callout bad"><b>Avoid it when</b> you constantly insert or remove at the front or middle of a big collection. Look at <a href="linked-lists.html">linked lists</a> or <a href="hash-tables.html">hash tables</a> instead.</div>
+</main>
+<div id="site-footer"></div>
+<script src="app.js"></script>
+<script>
+(() => {
+  const START = [12, 7, 25, 3, 18, 9], CAP = 12;
+  let arr = START.slice(), busy = false;
+  const box = $('#arr'), msg = t => $('#msg').innerHTML = t;
+  const draw = (hl = {}) => {
+    box.innerHTML = arr.map((v, i) => `<div class="cellw"><div class="cell ${hl[i] || ''}">${v}</div><div class="idx">${i}</div></div>`).join('')
+      + Array.from({ length: CAP - arr.length }, (_, k) => `<div class="cellw"><div class="cell empty"></div><div class="idx">${arr.length + k}</div></div>`).join('');
+  };
+  const lock = on => { busy = on; $$('.demo .btn').forEach(b => b.disabled = on); };
+  const val = () => +$('#val').value, pos = () => +$('#pos').value;
+
+  $('#read').onclick = () => {
+    const p = pos(); if (p < 0 || p >= arr.length) return msg(`There is nothing at position ${p}. Valid positions are 0 to ${arr.length - 1}.`);
+    draw({ [p]: 'hl' });
+    msg(`Position ${p} holds <b>${arr[p]}</b>. That took <b>1 step</b> — the computer jumped straight there. It would be 1 step for a million items too.`);
+  };
+  $('#ins').onclick = async () => {
+    const p = pos(); if (arr.length >= CAP) return msg('The array is full (12 slots). Real arrays grow by copying everything into a bigger one — another cost!');
+    if (p < 0 || p > arr.length) return msg(`Pick a position from 0 to ${arr.length}.`);
+    lock(true); arr.push(null); let shifts = 0;
+    for (let k = arr.length - 1; k > p; k--) {
+      arr[k] = arr[k - 1]; arr[k - 1] = null; shifts++;
+      draw({ [k]: 'moved' }); msg(`Shifting an item one slot to the right… (${shifts})`); await sleep(350);
+    }
+    arr[p] = val(); draw({ [p]: 'found' });
+    msg(`Inserted <b>${val()}</b> at ${p}. We had to shift <b>${shifts}</b> item${shifts === 1 ? '' : 's'}. Try position 0 — the worst case.`); lock(false);
+  };
+  $('#del').onclick = async () => {
+    const p = pos(); if (p < 0 || p >= arr.length) return msg(`Nothing to delete at position ${p}.`);
+    lock(true); let shifts = 0; const gone = arr[p];
+    for (let k = p; k < arr.length - 1; k++) { arr[k] = arr[k + 1]; shifts++; draw({ [k]: 'moved' }); msg(`Closing the gap… (${shifts})`); await sleep(350); }
+    arr.pop(); draw();
+    msg(`Deleted <b>${gone}</b>. We had to shift <b>${shifts}</b> item${shifts === 1 ? '' : 's'} to close the gap.`); lock(false);
+  };
+  $('#find').onclick = async () => {
+    const v = val(); lock(true); let steps = 0, at = -1;
+    for (let i = 0; i < arr.length; i++) { steps++; draw({ [i]: 'hl' }); msg(`Is item ${i} equal to ${v}? (${steps} step${steps === 1 ? '' : 's'})`); await sleep(400); if (arr[i] === v) { at = i; break; } }
+    if (at >= 0) { draw({ [at]: 'found' }); msg(`Found <b>${v}</b> at position ${at} after <b>${steps}</b> steps.`); }
+    else { draw(); msg(`<b>${v}</b> isn't there. We had to check all <b>${steps}</b> items to be sure.`); }
+    lock(false);
+  };
+  $('#reset').onclick = () => { arr = START.slice(); draw(); msg('Reset.'); };
+  draw();
+})();
+</script>
+</body></html>

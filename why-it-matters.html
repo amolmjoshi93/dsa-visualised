@@ -1,0 +1,112 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Why It Matters – DSA Visualised</title><link rel="stylesheet" href="style.css"></head>
+<body>
+<div id="site-header"></div>
+<main class="page">
+<div class="crumbs"><a href="index.html">Home</a> › Why it matters</div>
+<h1>🚀 Why does any of this matter?</h1>
+<p class="lead">With 10 items, every method feels instant. The differences only explode when the data gets big — and real data always does.</p>
+
+<div class="callout"><b>Everyday picture:</b> finding a name in a phone book. With 20 names, flipping through is fine. With 20 million names, flipping through takes a lifetime — but opening in the middle and halving takes about 25 looks. Same task, wildly different effort, purely because of <i>how</i> you go about it.</div>
+
+<h2>1. Feel the scale</h2>
+<p>Drag the slider to change how many items there are. The bars show how many steps each approach needs (on a log scale — each bar tick is 10× more). The time column assumes a fast computer doing <b>100 million steps per second</b>.</p>
+<div class="demo">
+  <div class="row"><label style="font-size:1rem"><b>Items (n):</b> <input type="range" id="nslider" min="1" max="9" value="5" style="width:260px"> <b id="nlabel" style="color:var(--ink);font-size:1.1rem"></b></label></div>
+  <div class="bigo" id="bigo"></div>
+  <div class="msg" id="bigomsg"></div>
+</div>
+<p class="small">O(1) = constant · O(log n) = binary search, tree lookup · O(n) = scanning once · O(n log n) = good sorts · O(n²) = simple sorts like bubble sort.</p>
+
+<h2>2. Race the sorting algorithms</h2>
+<p>Same random list for everyone. We run each algorithm to the end and count how many <b>comparisons</b> it needs.</p>
+<div class="demo">
+  <div class="row">
+    <label>List size <input type="range" id="rn" min="10" max="2000" value="500"> <b id="rnlabel"></b></label>
+    <button class="btn primary" id="race">🏁 Run the race</button>
+  </div>
+  <div class="bigo" id="raceout" style="grid-template-columns:130px 1fr 150px"></div>
+  <div class="msg" id="racemsg">Press the button. Try 100 items, then 2000 — watch the gap grow.</div>
+</div>
+
+<h2>3. Searching: one look vs a million</h2>
+<div class="demo">
+  <div class="cols">
+    <div class="card"><b>🔦 Linear search</b><br>1,000,000 sorted names<br><span style="font-size:2rem;font-weight:800;color:var(--swap)">up to 1,000,000</span> looks</div>
+    <div class="card"><b>✂️ Binary search</b><br>the same 1,000,000 names<br><span style="font-size:2rem;font-weight:800;color:var(--ok)">at most 20</span> looks</div>
+    <div class="card"><b>🗂️ Hash table</b><br>the same names, by key<br><span style="font-size:2rem;font-weight:800;color:var(--brand)">≈ 1</span> look</div>
+  </div>
+</div>
+
+<h2>The big idea</h2>
+<ul class="tight">
+  <li><b>Choosing a good data structure</b> decides which operations are cheap: arrays love "read by position", hash tables love "find by key", trees love "keep sorted and search".</li>
+  <li><b>Choosing a good algorithm</b> decides how the work grows as data grows.</li>
+  <li><b>Big-O notation</b> is just a way to describe that growth, ignoring small details. O(n²) vs O(n log n) is the difference between <i>done in a blink</i> and <i>go make tea</i> — or years.</li>
+  <li>Nobody memorises every detail. The skill is knowing the <b>trade-offs</b> so you pick sensibly.</li>
+</ul>
+
+<div class="callout good"><b>Next:</b> explore the structures — start with <a href="arrays.html">arrays</a> — then see <a href="linear-search.html">searching</a> and <a href="bubble-sort.html">sorting</a> in action.</div>
+</main>
+<div id="site-footer"></div>
+<script src="app.js"></script>
+<script>
+(() => {
+  /* --- Part 1: Big-O scale --- */
+  const fmtN = n => n.toLocaleString('en-IN').replace(/,/g, ',');
+  const fmtT = s => {
+    if (s < 1e-6) return 'instant';
+    if (s < 1e-3) return (s * 1e6).toFixed(s * 1e6 < 10 ? 1 : 0) + ' µs';
+    if (s < 1) return (s * 1e3).toFixed(s * 1e3 < 10 ? 1 : 0) + ' ms';
+    if (s < 60) return s.toFixed(1) + ' seconds';
+    if (s < 3600) return (s / 60).toFixed(1) + ' minutes';
+    if (s < 86400) return (s / 3600).toFixed(1) + ' hours';
+    if (s < 86400 * 365) return (s / 86400).toFixed(1) + ' days';
+    const y = s / (86400 * 365);
+    return (y >= 1e6 ? y.toExponential(1) : Math.round(y).toLocaleString('en-US')) + ' years';
+  };
+  const fmtOps = o => o >= 1e15 ? o.toExponential(1).replace('e+', ' × 10^') : Math.round(o).toLocaleString('en-US');
+  const ROWS = [
+    ['O(1)', '#10b981', n => 1],
+    ['O(log n)', '#0ea5a4', n => Math.max(1, Math.ceil(Math.log2(n)))],
+    ['O(n)', '#6366f1', n => n],
+    ['O(n log n)', '#f59e0b', n => n * Math.max(1, Math.log2(n))],
+    ['O(n²)', '#ef4444', n => n * n],
+  ];
+  function scale() {
+    const n = Math.pow(10, +$('#nslider').value);
+    $('#nlabel').textContent = n.toLocaleString('en-US');
+    const MAXLOG = 18;
+    $('#bigo').innerHTML = ROWS.map(([name, col, f]) => {
+      const ops = f(n), w = Math.max(1.5, Math.log10(Math.max(ops, 1)) / MAXLOG * 100);
+      return `<div class="lab">${name}</div><div class="track"><div class="fill" style="width:${w}%;background:${col}"></div></div><div class="val">${fmtOps(ops)} steps · ${fmtT(ops / 1e8)}</div>`;
+    }).join('');
+    const quad = n * n / 1e8, nlog = n * Math.log2(n) / 1e8;
+    $('#bigomsg').innerHTML = n < 1000
+      ? `At ${n.toLocaleString('en-US')} items everything is instant. Drag the slider right…`
+      : `Sorting ${n.toLocaleString('en-US')} items: a good O(n log n) sort takes about <b>${fmtT(nlog)}</b>; a simple O(n²) sort takes about <b>${fmtT(quad)}</b>.`;
+  }
+  $('#nslider').oninput = scale; scale();
+
+  /* --- Part 2: race --- */
+  const rn = $('#rn'); const lab = () => $('#rnlabel').textContent = (+rn.value).toLocaleString('en-US') + ' items';
+  rn.oninput = lab; lab();
+  function countComparisons(algo, data) {
+    let c = 0; for (const e of SortAlgos[algo](data.slice())) if (e.t === 'cmp') c++; return c;
+  }
+  $('#race').onclick = async () => {
+    const n = +rn.value, data = Array.from({ length: n }, () => rand(1, 1e6));
+    $('#race').disabled = true; $('#racemsg').textContent = 'Running…'; await sleep(30);
+    const names = { bubble: 'Bubble', selection: 'Selection', insertion: 'Insertion', merge: 'Merge', quick: 'Quick' };
+    const cols = { bubble: '#ef4444', selection: '#f97316', insertion: '#f59e0b', merge: '#10b981', quick: '#0ea5a4' };
+    const res = {}; for (const k of Object.keys(names)) res[k] = countComparisons(k, data);
+    const max = Math.max(...Object.values(res)), best = Math.min(...Object.values(res));
+    $('#raceout').innerHTML = Object.keys(names).sort((a, b) => res[a] - res[b]).map(k =>
+      `<div class="lab">${names[k]}</div><div class="track"><div class="fill" style="width:${Math.max(1, res[k] / max * 100)}%;background:${cols[k]}"></div></div><div class="val">${res[k].toLocaleString('en-US')} comparisons</div>`).join('');
+    $('#racemsg').innerHTML = `For <b>${n.toLocaleString('en-US')}</b> random items, the slowest needed <b>${(max / best).toFixed(1)}×</b> more comparisons than the fastest. Double the list size and run it again — the O(n²) ones roughly quadruple.`;
+    $('#race').disabled = false;
+  };
+})();
+</script>
+</body></html>

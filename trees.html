@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Trees – DSA Visualised</title><link rel="stylesheet" href="style.css"></head>
+<body>
+<div id="site-header"></div>
+<main class="page">
+<div class="crumbs"><a href="index.html#ds">Data structures</a> › Trees</div>
+<h1>🌳 Trees</h1>
+<p class="lead">Data arranged as a hierarchy — one starting point at the top, branching downwards. A special kind, the <b>binary search tree</b>, finds things incredibly fast.</p>
+
+<div class="callout"><b>Everyday picture:</b> the folders on your computer. One root folder, with folders inside folders. Or a family tree. Or a company's org chart: one CEO at the top, branching down.</div>
+
+<h2>Try it: a binary search tree</h2>
+<p>The rule: for every node, <b>smaller values go to the left, bigger values go to the right</b>. So at each node you can ignore half of what remains — just like <a href="binary-search.html">binary search</a>.</p>
+<div class="demo">
+  <svg class="canvas" id="svg" viewBox="0 0 700 330" role="img" aria-label="Binary search tree"></svg>
+  <div class="msg" id="msg">Insert a number, or search for one and watch the path it takes.</div>
+  <div class="row">
+    <label>Value <input type="number" id="val" value="55" min="1" max="99"></label>
+    <button class="btn primary" id="ins">Insert</button>
+    <button class="btn" id="srch">Search</button>
+    <button class="btn" id="rnd">Add random</button>
+    <button class="btn" id="reset">Reset</button>
+  </div>
+</div>
+
+<h2>How it works</h2>
+<ol class="steps">
+  <li><b>Start at the root</b> (the top node).</li>
+  <li><b>Compare:</b> is the number you want smaller or bigger than this node? Go left or right accordingly.</li>
+  <li><b>Repeat</b> until you find it, or hit an empty spot. An empty spot is exactly where a new value belongs when inserting.</li>
+  <li><b>Height matters.</b> A well-balanced tree of 1,000,000 items is only about 20 levels tall, so any search takes ≤ 20 steps. (A lopsided tree can degrade to a list — real databases use self-balancing trees to prevent that.)</li>
+</ol>
+
+<h2>Real life</h2>
+<div class="cols">
+  <div class="card"><b>📁 File systems</b><br>Folders inside folders — a tree.</div>
+  <div class="card"><b>🌐 The web page you're reading</b><br>HTML is a tree (the DOM): <code>html → body → main → …</code></div>
+  <div class="card"><b>🗄️ Database indexes</b><br>When a database finds one row among millions in milliseconds, it's walking a tree (a B-tree).</div>
+  <div class="card"><b>🏢 Org charts, family trees, menus</b><br>Anything with "parent and children".</div>
+</div>
+
+<h2>Speed at a glance (balanced tree)</h2>
+<table class="tbl">
+<tr><th>Operation</th><th>Speed</th><th>Why</th></tr>
+<tr><td>Search</td><td><span class="tag g">O(log n)</span></td><td>Halve the candidates each level</td></tr>
+<tr><td>Insert</td><td><span class="tag g">O(log n)</span></td><td>Search for the spot, then attach</td></tr>
+<tr><td>Delete</td><td><span class="tag g">O(log n)</span></td><td>Find it, then re-link</td></tr>
+<tr><td>List everything in sorted order</td><td><span class="tag g">O(n)</span></td><td>Walk the tree left → node → right</td></tr>
+<tr><td>Worst case (lopsided tree)</td><td><span class="tag r">O(n)</span></td><td>Looks like a linked list</td></tr>
+</table>
+<div class="callout good"><b>Use it when</b> you need fast lookups <i>and</i> want things kept in sorted order, or the data is naturally hierarchical.</div>
+</main>
+<div id="site-footer"></div>
+<script src="app.js"></script>
+<script>
+(() => {
+  const START = [50, 30, 70, 20, 40, 60, 80];
+  let root = null, hl = new Set(), foundV = null;
+  const msg = t => $('#msg').innerHTML = t, val = () => +$('#val').value;
+  const mk = v => ({ v, l: null, r: null });
+  function insert(v) {
+    if (!root) { root = mk(v); return 1; }
+    let n = root, steps = 1;
+    while (true) {
+      if (v === n.v) return -1;
+      const side = v < n.v ? 'l' : 'r'; steps++;
+      if (!n[side]) { n[side] = mk(v); return steps; }
+      n = n[side];
+    }
+  }
+  const count = n => n ? 1 + count(n.l) + count(n.r) : 0;
+  function layout() {
+    const pos = new Map(); let idx = 0, total = count(root);
+    (function walk(n, d) { if (!n) return; walk(n.l, d + 1); pos.set(n, { x: 30 + (idx++ + 0.5) * (640 / total), y: 36 + d * 62 }); walk(n.r, d + 1); })(root, 0);
+    return pos;
+  }
+  function draw() {
+    const pos = layout(); let e = '', c = '';
+    (function walk(n) {
+      if (!n) return; const p = pos.get(n);
+      for (const k of ['l', 'r']) if (n[k]) { const q = pos.get(n[k]); e += `<line class="edge ${hl.has(n.v) && hl.has(n[k].v) ? 'hl' : ''}" x1="${p.x}" y1="${p.y}" x2="${q.x}" y2="${q.y}"/>`; }
+      walk(n.l); walk(n.r);
+    })(root);
+    pos.forEach((p, n) => { c += `<circle class="vn ${n.v === foundV ? 'ok' : hl.has(n.v) ? 'hl' : ''}" cx="${p.x}" cy="${p.y}" r="20"/><text x="${p.x}" y="${p.y + 5}">${n.v}</text>`; });
+    $('#svg').innerHTML = e + c;
+  }
+  const lock = on => $$('.demo .btn').forEach(b => b.disabled = on);
+  const depth = n => n ? 1 + Math.max(depth(n.l), depth(n.r)) : 0;
+  function doInsert(v) {
+    if (v < 1 || v > 99 || !Number.isFinite(v)) return msg('Pick a number from 1 to 99.');
+    if (count(root) >= 15) return msg('Tree is full for this demo (15 nodes). Reset to start again.');
+    hl = new Set(); foundV = null; const s = insert(v);
+    if (s < 0) return msg(`<b>${v}</b> is already in the tree.`);
+    hl = new Set([v]); draw();
+    msg(`Inserted <b>${v}</b> after <b>${s}</b> comparison${s > 1 ? 's' : ''}. The tree has ${count(root)} nodes and is ${depth(root)} levels tall.`);
+  }
+  $('#ins').onclick = () => doInsert(val());
+  $('#rnd').onclick = () => doInsert(rand(1, 99));
+  $('#srch').onclick = async () => {
+    const v = val(); lock(true); hl = new Set(); foundV = null; draw();
+    let n = root, steps = 0, path = [];
+    while (n) {
+      steps++; hl.add(n.v); path.push(n.v); draw();
+      if (v === n.v) { foundV = v; draw(); msg(`Found <b>${v}</b> in <b>${steps}</b> step${steps > 1 ? 's' : ''}! Path: ${path.join(' → ')}.<br>An unsorted list of ${count(root)} items could need up to ${count(root)}.`); lock(false); return; }
+      msg(`At <b>${n.v}</b>: ${v} is ${v < n.v ? 'smaller → go left' : 'bigger → go right'}.`);
+      await sleep(900); n = v < n.v ? n.l : n.r;
+    }
+    msg(`Reached an empty spot after ${steps} step${steps > 1 ? 's' : ''} — <b>${v}</b> is not in the tree. (It would be inserted right here.)`); lock(false);
+  };
+  $('#reset').onclick = () => { root = null; START.forEach(insert); hl = new Set(); foundV = null; draw(); msg('Reset.'); };
+  START.forEach(insert); draw();
+})();
+</script>
+</body></html>

@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Queues – DSA Visualised</title><link rel="stylesheet" href="style.css"></head>
+<body>
+<div id="site-header"></div>
+<main class="page">
+<div class="crumbs"><a href="index.html#ds">Data structures</a> › Queues</div>
+<h1>🎟️ Queues</h1>
+<p class="lead">A line where newcomers join at the back and the person at the front is served first. Fair, simple, predictable.</p>
+
+<div class="callout"><b>Everyday picture:</b> the queue at a railway ticket counter. New people stand at the back. The counter serves whoever has been waiting longest — the front. This rule is called <b>FIFO</b>: First In, First Out. (A <a href="stacks.html">stack</a> is the opposite: LIFO.)</div>
+
+<h2>Try it: ticket counter</h2>
+<div class="demo">
+  <div class="tagl" style="display:flex;justify-content:space-between"><span>front (served next) ↓</span><span>back (new people join) ↓</span></div>
+  <div class="chain" id="line" style="min-height:60px"></div>
+  <div class="msg" id="msg">Add people to the line, then serve them. Who gets served first?</div>
+  <div class="row">
+    <button class="btn primary" id="enq">➕ Person joins (enqueue)</button>
+    <button class="btn" id="deq">🎫 Serve front (dequeue)</button>
+    <button class="btn" id="peek">👀 Who's next? (peek)</button>
+  </div>
+  <div><b>Already served:</b> <span id="served" style="color:var(--muted)">nobody yet</span></div>
+</div>
+
+<h2>How it works</h2>
+<ol class="steps">
+  <li><b>Enqueue</b> — add to the back of the line.</li>
+  <li><b>Dequeue</b> — remove from the front. That's the one who waited the longest.</li>
+  <li><b>Both are instant</b>, because we keep track of both ends and never need to search the middle.</li>
+</ol>
+
+<h2>Real life</h2>
+<div class="cols">
+  <div class="card"><b>🖨️ Print jobs</b><br>Documents print in the order they were sent.</div>
+  <div class="card"><b>📨 Message systems</b><br>Emails, SMS, and background jobs wait in queues until a worker picks them up.</div>
+  <div class="card"><b>🎮 Matchmaking</b><br>Players wait in a lobby queue; whoever's been waiting longest is matched first.</div>
+  <div class="card"><b>🚑 Priority queues</b><br>A variation: an emergency room serves the most urgent patient first, not the earliest.</div>
+</div>
+
+<h2>Speed at a glance</h2>
+<table class="tbl">
+<tr><th>Operation</th><th>Speed</th></tr>
+<tr><td>Enqueue (join the back)</td><td><span class="tag g">O(1)</span></td></tr>
+<tr><td>Dequeue (leave the front)</td><td><span class="tag g">O(1)</span></td></tr>
+<tr><td>Peek at the front</td><td><span class="tag g">O(1)</span></td></tr>
+<tr><td>Find a particular person</td><td><span class="tag r">O(n)</span></td></tr>
+</table>
+<div class="callout good"><b>Use it when</b> order of arrival matters and fairness is the goal. Queues also power <a href="graphs.html">breadth-first search</a> on graphs.</div>
+</main>
+<div id="site-footer"></div>
+<script src="app.js"></script>
+<script>
+(() => {
+  const NAMES = ['Asha', 'Ravi', 'Meera', 'Kabir', 'Isha', 'Neel', 'Tara', 'Dev', 'Zoya', 'Arjun', 'Riya', 'Sam'];
+  let q = [], served = [], k = 0;
+  const msg = t => $('#msg').innerHTML = t;
+  const draw = () => {
+    $('#line').innerHTML = q.length ? q.map((n, i) => `<div class="node ${i === 0 ? 'ok' : ''}"><b>🧍 ${n}</b></div>${i < q.length - 1 ? '<div class="arrow">←</div>' : ''}`).join('') : '<span style="color:var(--muted)">The line is empty.</span>';
+    $('#served').textContent = served.length ? served.join(' → ') : 'nobody yet';
+  };
+  $('#enq').onclick = () => {
+    if (q.length >= 8) return msg('The line is long enough for this demo — serve someone!');
+    const n = NAMES[k++ % NAMES.length]; q.push(n); draw(); msg(`<b>${n}</b> joins the back of the line.`);
+  };
+  $('#deq').onclick = () => {
+    if (!q.length) return msg('Nobody to serve.');
+    const n = q.shift(); served.push(n); draw(); msg(`Served <b>${n}</b> — they were at the front, so they waited longest (FIFO).`);
+  };
+  $('#peek').onclick = () => msg(q.length ? `Next up: <b>${q[0]}</b>.` : 'The line is empty.');
+  ['enq', 'enq', 'enq'].forEach(() => $('#enq').click());
+  msg('Add people to the line, then serve them. Who gets served first?');
+})();
+</script>
+</body></html>

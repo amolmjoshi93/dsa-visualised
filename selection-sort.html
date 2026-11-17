@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Selection Sort – DSA Visualised</title><link rel="stylesheet" href="style.css"></head>
+<body>
+<div id="site-header"></div>
+<main class="page">
+<div class="crumbs"><a href="index.html#sort">Sorting</a> › Selection sort</div>
+<h1>🎯 Selection Sort</h1>
+<p class="lead">Find the smallest item in the unsorted part, put it at the front. Then find the next smallest. Repeat.</p>
+
+<div class="callout"><b>Everyday picture:</b> picking a cricket team by height. Scan everyone, choose the shortest, send them to the front of the line. Scan the rest, choose the shortest again, put them second. Each round, one person is permanently in their final place.</div>
+
+<h2>Watch it</h2>
+<div class="demo"><div data-algo="selection"></div></div>
+<p>Look at the "Swaps / writes" counter: selection sort does very few swaps (at most one per round), even though it compares a lot.</p>
+
+<h2>How it works</h2>
+<ol class="steps">
+  <li><b>Scan the unsorted part</b> and remember where the smallest value is (the orange bar is the current "smallest so far").</li>
+  <li><b>Swap it</b> with the first unsorted position.</li>
+  <li><b>That position is now final</b> (green). Shrink the unsorted part by one.</li>
+  <li><b>Repeat</b> until everything is placed.</li>
+</ol>
+
+<h2>Real life</h2>
+<div class="cols">
+  <div class="card"><b>🏆 Ranking a leaderboard by hand</b><br>Pick the best, then the best of the rest.</div>
+  <div class="card"><b>💾 Writes are expensive</b><br>Because it makes the fewest swaps, it suits situations where moving data costs far more than looking at it (some flash-memory cases).</div>
+</div>
+
+<h2>Speed at a glance</h2>
+<table class="tbl">
+<tr><th>Case</th><th>Speed</th></tr>
+<tr><td>Best / average / worst</td><td><span class="tag r">O(n²)</span> — always scans the rest, even if sorted</td></tr>
+<tr><td>Swaps</td><td><span class="tag g">≤ n − 1</span></td></tr>
+<tr><td>Extra memory</td><td><span class="tag g">O(1)</span></td></tr>
+<tr><td>Stable?</td><td>No (swapping can jump equal items over each other)</td></tr>
+</table>
+
+<div class="callout good"><b>Use it when</b> the list is small and swaps are costly.</div>
+<div class="callout bad"><b>Avoid it when</b> the list is large, or nearly sorted — it can't exploit that, unlike <a href="insertion-sort.html">insertion sort</a>.</div>
+</main>
+<div id="site-footer"></div>
+<script src="app.js"></script>
+</body></html>

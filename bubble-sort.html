@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Bubble Sort – DSA Visualised</title><link rel="stylesheet" href="style.css"></head>
+<body>
+<div id="site-header"></div>
+<main class="page">
+<div class="crumbs"><a href="index.html#sort">Sorting</a> › Bubble sort</div>
+<h1>🫧 Bubble Sort</h1>
+<p class="lead">Walk along the line, swap any two neighbours that are in the wrong order, and repeat. The biggest values "bubble up" to the end.</p>
+
+<div class="callout"><b>Everyday picture:</b> students lined up for a photo, supposed to be shortest to tallest. You walk down the line and whenever someone is taller than the person next to them, you make them swap. After one walk the tallest student is at the end. After another walk, the second tallest is in place. Keep going until a full walk needs no swaps.</div>
+
+<h2>Watch it</h2>
+<div class="demo"><div data-algo="bubble"></div></div>
+<p>Try the <b>Nearly sorted</b> data option — bubble sort notices when a pass needs no swaps and stops early. Then try <b>Reversed</b> — its worst nightmare.</p>
+
+<h2>How it works</h2>
+<ol class="steps">
+  <li><b>Compare the first two items.</b> If the left one is bigger, swap them.</li>
+  <li><b>Move one step right</b> and compare the next pair. Continue to the end of the list.</li>
+  <li><b>The largest item is now at the end</b> (green). It never needs to move again.</li>
+  <li><b>Repeat</b> for the remaining items. If a whole pass makes no swaps, the list is sorted — stop.</li>
+</ol>
+
+<h2>Real life</h2>
+<div class="cols">
+  <div class="card"><b>🧍 Lining people up by height</b><br>By swapping neighbours, exactly like above.</div>
+  <div class="card"><b>🎓 Teaching</b><br>Bubble sort is rarely used in real software, but it's a perfect first example of <i>how</i> a sorting algorithm thinks.</div>
+</div>
+
+<h2>Speed at a glance</h2>
+<table class="tbl">
+<tr><th>Case</th><th>Speed</th></tr>
+<tr><td>Best (already sorted)</td><td><span class="tag g">O(n)</span> — one pass, no swaps</td></tr>
+<tr><td>Average</td><td><span class="tag r">O(n²)</span></td></tr>
+<tr><td>Worst (reversed)</td><td><span class="tag r">O(n²)</span></td></tr>
+<tr><td>Extra memory</td><td><span class="tag g">O(1)</span> — sorts in place</td></tr>
+<tr><td>Stable?</td><td>Yes — equal items keep their order</td></tr>
+</table>
+<p>O(n²) means: 10× more items → about 100× more work. See that on the <a href="why-it-matters.html">Why it matters</a> page.</p>
+
+<div class="callout good"><b>Use it when</b> learning, or for tiny lists that are almost sorted.</div>
+<div class="callout bad"><b>Avoid it when</b> the list is large. Use <a href="merge-sort.html">merge sort</a> or <a href="quick-sort.html">quick sort</a>.</div>
+</main>
+<div id="site-footer"></div>
+<script src="app.js"></script>
+</body></html>

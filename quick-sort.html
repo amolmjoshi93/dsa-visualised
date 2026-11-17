@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Quick Sort – DSA Visualised</title><link rel="stylesheet" href="style.css"></head>
+<body>
+<div id="site-header"></div>
+<main class="page">
+<div class="crumbs"><a href="index.html#sort">Sorting</a> › Quick sort</div>
+<h1>⚡ Quick Sort</h1>
+<p class="lead">Pick one item as the <b>pivot</b>. Move everything smaller to its left and everything bigger to its right. The pivot is now in its final spot — then do the same to each side.</p>
+
+<div class="callout"><b>Everyday picture:</b> organising a crowd by height. Pick one person as the reference. Everyone shorter stands on their left, everyone taller on their right. Now you have two smaller crowds — repeat for each. Soon every group has one person, and the whole crowd is in order.</div>
+
+<h2>Watch it</h2>
+<div class="demo"><div data-algo="quick" data-n="20"></div></div>
+<p>The purple bar is the pivot. After each partition, the pivot turns green: it's exactly where it belongs forever. Try <b>Reversed</b> or <b>Nearly sorted</b> to see why this simple "last item as pivot" version struggles on them.</p>
+
+<h2>How it works</h2>
+<ol class="steps">
+  <li><b>Choose a pivot</b> (here, the last item in the section).</li>
+  <li><b>Partition:</b> scan the section; move values smaller than the pivot to the left part.</li>
+  <li><b>Place the pivot</b> right after the "smaller" group. It's now in its final position.</li>
+  <li><b>Recurse:</b> do the same on the left part and on the right part.</li>
+</ol>
+<p>If the pivot splits things roughly in half each time, we get about <b>log n</b> levels of <b>n</b> work: <b>n log n</b>. A bad pivot (like always the smallest) gives lopsided splits and <b>n²</b>. Real libraries choose pivots cleverly (e.g. median of three, or random) to avoid this.</p>
+
+<h2>Real life</h2>
+<div class="cols">
+  <div class="card"><b>📚 Standard libraries</b><br>C's <code>qsort</code> and C++'s <code>std::sort</code> (introsort) are quick-sort based.</div>
+  <div class="card"><b>🔬 Big in-memory data</b><br>It sorts in place and is very cache-friendly, which makes it fast in practice.</div>
+  <div class="card"><b>🥇 "Top-k" problems</b><br>A cousin of quick sort (quickselect) finds the median or the 10 best items without fully sorting.</div>
+</div>
+
+<h2>Speed at a glance</h2>
+<table class="tbl">
+<tr><th>Case</th><th>Speed</th></tr>
+<tr><td>Best / average</td><td><span class="tag g">O(n log n)</span></td></tr>
+<tr><td>Worst (bad pivots)</td><td><span class="tag r">O(n²)</span></td></tr>
+<tr><td>Extra memory</td><td><span class="tag g">O(log n)</span> (the recursion)</td></tr>
+<tr><td>Stable?</td><td>No</td></tr>
+</table>
+
+<div class="callout good"><b>Use it when</b> you need a fast general-purpose sort on in-memory data and don't need stability.</div>
+<div class="callout bad"><b>Avoid it when</b> you need a guaranteed worst case or a stable result — use <a href="merge-sort.html">merge sort</a>.</div>
+</main>
+<div id="site-footer"></div>
+<script src="app.js"></script>
+</body></html>

@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Merge Sort – DSA Visualised</title><link rel="stylesheet" href="style.css"></head>
+<body>
+<div id="site-header"></div>
+<main class="page">
+<div class="crumbs"><a href="index.html#sort">Sorting</a> › Merge sort</div>
+<h1>🧩 Merge Sort</h1>
+<p class="lead">Split the list in half again and again until each piece has one item (trivially sorted), then merge the pieces back together in order.</p>
+
+<div class="callout"><b>Everyday picture:</b> two teachers each have a sorted pile of exam papers. To combine them, you only look at the top paper of each pile, take the smaller one, and repeat. No digging around — merging two sorted piles is quick. Merge sort just keeps splitting until the piles are tiny, then merges its way back up.</div>
+
+<h2>Watch it</h2>
+<div class="demo"><div data-algo="merge" data-n="16"></div></div>
+<p>The bright bars show the section currently being merged; the faded ones are waiting. Notice it makes <b>writes</b> (copying values back) instead of swaps.</p>
+
+<h2>How it works</h2>
+<ol class="steps">
+  <li><b>Divide:</b> cut the list into two halves.</li>
+  <li><b>Conquer:</b> sort each half the same way (recursively), until a half has just one item.</li>
+  <li><b>Merge:</b> compare the front items of the two sorted halves; move the smaller one into the result; repeat until both halves are used up.</li>
+</ol>
+<p>The list is halved about <b>log₂ n</b> times, and each level of merging touches all <b>n</b> items — hence <b>n log n</b> in total.</p>
+
+<h3>In code (JavaScript)</h3>
+<pre style="background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px;overflow:auto"><code>function mergeSort(a) {
+  if (a.length &lt;= 1) return a;
+  const mid = a.length &gt;&gt; 1;
+  const left = mergeSort(a.slice(0, mid));
+  const right = mergeSort(a.slice(mid));
+  const out = [];
+  while (left.length &amp;&amp; right.length)
+    out.push(left[0] &lt;= right[0] ? left.shift() : right.shift());
+  return [...out, ...left, ...right];
+}</code></pre>
+
+<h2>Real life</h2>
+<div class="cols">
+  <div class="card"><b>🗃️ Sorting huge files</b><br>Data too big for memory is sorted in chunks, and the sorted chunks are merged — that's merge sort.</div>
+  <div class="card"><b>🐍 Real libraries</b><br>Python and Java's default object sorts (Timsort) are built on merging.</div>
+  <div class="card"><b>🧾 Combining sorted feeds</b><br>Merging two sorted lists of transactions into one timeline.</div>
+</div>
+
+<h2>Speed at a glance</h2>
+<table class="tbl">
+<tr><th>Case</th><th>Speed</th></tr>
+<tr><td>Best / average / worst</td><td><span class="tag g">O(n log n)</span> — reliably</td></tr>
+<tr><td>Extra memory</td><td><span class="tag r">O(n)</span> — needs a helper copy</td></tr>
+<tr><td>Stable?</td><td>Yes</td></tr>
+</table>
+
+<div class="callout good"><b>Use it when</b> you need predictable speed on big data, or a stable sort.</div>
+<div class="callout bad"><b>Avoid it when</b> memory is very tight — <a href="quick-sort.html">quick sort</a> sorts in place.</div>
+</main>
+<div id="site-footer"></div>
+<script src="app.js"></script>
+</body></html>

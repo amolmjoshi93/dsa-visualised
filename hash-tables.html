@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Hash Tables – DSA Visualised</title><link rel="stylesheet" href="style.css"></head>
+<body>
+<div id="site-header"></div>
+<main class="page">
+<div class="crumbs"><a href="index.html#ds">Data structures</a> › Hash tables</div>
+<h1>🗂️ Hash Tables</h1>
+<p class="lead">Look things up by name instead of by position — and get the answer almost instantly, even among millions of entries.</p>
+
+<div class="callout"><b>Everyday picture:</b> a cupboard with 7 labelled drawers. A simple rule tells you which drawer each name belongs in. To find "Meera", you don't open every drawer — you apply the rule, open exactly one drawer, and look inside. That rule is the <b>hash function</b>.</div>
+
+<h2>Try it: a phone book with 7 drawers</h2>
+<div class="demo">
+  <p style="margin-top:0">Our rule: <b>add up the character codes of the name, then take the remainder after dividing by 7.</b></p>
+  <div class="buckets" id="buckets"></div>
+  <div class="msg" id="msg">Add a contact or look one up.</div>
+  <div class="row">
+    <label>Name <input type="text" id="key" value="Meera"></label>
+    <label>Phone <input type="text" id="phone" value="98220"></label>
+    <button class="btn primary" id="put">Store it</button>
+    <button class="btn" id="get">Look it up</button>
+    <button class="btn" id="reset">Reset</button>
+  </div>
+  <div class="small">Tip: add many names. When two names land in the same drawer it's called a <b>collision</b> — they just share the drawer (a small chain).</div>
+</div>
+
+<h2>How it works</h2>
+<ol class="steps">
+  <li><b>The hash function turns a key into a number.</b> Same key, same number — every time.</li>
+  <li><b>That number picks a bucket</b> (drawer). Storing and finding both go to the same bucket.</li>
+  <li><b>Collisions happen</b> when different keys hash to the same bucket. We keep a short list inside each bucket and check just those few.</li>
+  <li><b>Good tables stay roomy.</b> If buckets fill up, real hash tables grow and re-spread everything, so each bucket stays short.</li>
+</ol>
+
+<h2>Real life</h2>
+<div class="cols">
+  <div class="card"><b>📱 Contacts</b><br>Type a name, get a number. No scrolling the whole list.</div>
+  <div class="card"><b>🔑 Login sessions</b><br>Web servers find your session by a random ID in a hash table.</div>
+  <div class="card"><b>⚡ Caches</b><br>"Have I already computed this?" — answered in one lookup.</div>
+  <div class="card"><b>💎 Ruby Hash / Python dict / JS Map</b><br>All of them are hash tables under the hood.</div>
+</div>
+
+<h2>Speed at a glance</h2>
+<table class="tbl">
+<tr><th>Operation</th><th>Typical</th><th>Worst case</th></tr>
+<tr><td>Store</td><td><span class="tag g">O(1)</span></td><td><span class="tag r">O(n)</span> (everything collides)</td></tr>
+<tr><td>Look up by key</td><td><span class="tag g">O(1)</span></td><td><span class="tag r">O(n)</span></td></tr>
+<tr><td>Delete by key</td><td><span class="tag g">O(1)</span></td><td><span class="tag r">O(n)</span></td></tr>
+<tr><td>Get items in sorted order</td><td colspan="2"><span class="tag r">Not supported</span> — hash tables scatter items on purpose</td></tr>
+</table>
+<div class="callout good"><b>Use it when</b> you look things up by a key (names, IDs, words) and don't care about order.</div>
+<div class="callout bad"><b>Avoid it when</b> you need things in sorted order or "all keys between A and F" — use a <a href="trees.html">tree</a>.</div>
+</main>
+<div id="site-footer"></div>
+<script src="app.js"></script>
+<script>
+(() => {
+  const N = 7; let table;
+  const hash = k => [...k].reduce((s, c) => s + c.charCodeAt(0), 0) % N;
+  const calc = k => [...k].map(c => c.charCodeAt(0)).join(' + ') + ' = ' + [...k].reduce((s, c) => s + c.charCodeAt(0), 0);
+  const msg = t => $('#msg').innerHTML = t;
+  function reset() {
+    table = Array.from({ length: N }, () => []);
+    [['Asha', '90011'], ['Ravi', '90022'], ['Kabir', '90033'], ['Isha', '90044']].forEach(([k, v]) => table[hash(k)].push([k, v]));
+    draw(); msg('Add a contact or look one up.');
+  }
+  function draw(hb = -1, hk = null) {
+    $('#buckets').innerHTML = table.map((b, i) => `<div class="bucket ${i === hb ? 'hl' : ''}"><span class="bi">${i}</span>` +
+      (b.length ? b.map(([k, v]) => `<span class="entry ${k === hk ? 'hl' : ''}">${k}: ${v}</span>`).join('') : '<span style="color:var(--muted);font-size:.85rem">empty</span>') + '</div>').join('');
+  }
+  $('#put').onclick = () => {
+    const k = $('#key').value.trim(), v = $('#phone').value.trim(); if (!k) return msg('Type a name first.');
+    const h = hash(k), b = table[h], ex = b.find(e => e[0] === k);
+    if (ex) ex[1] = v; else b.push([k, v]);
+    draw(h, k);
+    msg(`<b>${k}</b>: ${calc(k)} → ${calc(k).split('= ')[1]} mod ${N} = <b>${h}</b>. Stored in drawer ${h}.` + (!ex && b.length > 1 ? ` <b>Collision!</b> Drawer ${h} already had ${b.length - 1} item${b.length > 2 ? 's' : ''}, so they share it.` : ''));
+  };
+  $('#get').onclick = () => {
+    const k = $('#key').value.trim(), h = hash(k), b = table[h]; let steps = 0, hit = null;
+    for (const e of b) { steps++; if (e[0] === k) { hit = e; break; } }
+    const total = table.reduce((s, x) => s + x.length, 0);
+    draw(h, hit && k);
+    if (hit) msg(`Hash of <b>${k}</b> = ${h}. Opened drawer ${h}, checked <b>${steps}</b> item${steps > 1 ? 's' : ''}: phone is <b>${hit[1]}</b>.<br>A plain list of ${total} contacts could need up to ${total} checks.`);
+    else msg(`Hash of <b>${k}</b> = ${h}. Drawer ${h} has no <b>${k}</b> (checked ${steps} item${steps === 1 ? '' : 's'}). Not stored — and we never opened the other ${N - 1} drawers.`);
+  };
+  $('#reset').onclick = reset;
+  reset();
+})();
+</script>
+</body></html>

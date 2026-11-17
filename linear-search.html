@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Linear Search – DSA Visualised</title><link rel="stylesheet" href="style.css"></head>
+<body>
+<div id="site-header"></div>
+<main class="page">
+<div class="crumbs"><a href="index.html#search">Searching</a> › Linear search</div>
+<h1>🔦 Linear Search</h1>
+<p class="lead">The most natural way to find something: look at the first item, then the next, then the next… until you find it or run out.</p>
+
+<div class="callout"><b>Everyday picture:</b> hunting for your house keys in a messy bag. You pull things out one at a time and check each. It works every time, needs no preparation, and doesn't care how messy the bag is — but a bigger bag takes longer.</div>
+
+<h2>Try it</h2>
+<div class="demo">
+  <div data-mode="linear"></div>
+</div>
+<p>Try a number that <b>isn't</b> in the list (type any number, like 100). Notice how every single box must be checked before we can be sure it's missing.</p>
+
+<h2>How it works</h2>
+<ol class="steps">
+  <li><b>Start at the first item.</b></li>
+  <li><b>Is it the one you want?</b> If yes, stop — you've found it.</li>
+  <li><b>If not, move to the next item</b> and repeat.</li>
+  <li><b>If you reach the end</b> without a match, the item isn't there.</li>
+</ol>
+
+<h3>In code (JavaScript)</h3>
+<pre style="background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px;overflow:auto"><code>function linearSearch(list, target) {
+  for (let i = 0; i &lt; list.length; i++) {
+    if (list[i] === target) return i;   // found it
+  }
+  return -1;                            // not here
+}</code></pre>
+
+<h2>Real life</h2>
+<div class="cols">
+  <div class="card"><b>🔑 Keys in a bag</b><br>No order, no shortcut — check everything.</div>
+  <div class="card"><b>🔎 Ctrl+F in a document</b><br>The browser scans the text from the start for your word.</div>
+  <div class="card"><b>💎 <code>list.include?(x)</code></b><br>Ruby's <code>Array#include?</code>, Python's <code>x in list</code> and JS's <code>indexOf</code> all do a linear search.</div>
+</div>
+
+<h2>Speed at a glance</h2>
+<table class="tbl">
+<tr><th>Case</th><th>Steps</th><th>When</th></tr>
+<tr><td>Best</td><td><span class="tag g">1</span> — O(1)</td><td>It's the first item</td></tr>
+<tr><td>Average</td><td><span class="tag">n/2</span> — O(n)</td><td>Somewhere in the middle</td></tr>
+<tr><td>Worst</td><td><span class="tag r">n</span> — O(n)</td><td>Last item, or not there at all</td></tr>
+</table>
+<p>For 1,000,000 items, the worst case is a million checks. That's fine once — painful if you do it thousands of times a second.</p>
+
+<div class="callout good"><b>Use it when</b> the list is small, or unsorted and you only search it once. It's also the only option for data you can't sort.</div>
+<div class="callout bad"><b>Avoid it when</b> the data is big and you search repeatedly. Sort once, then use <a href="binary-search.html">binary search</a> — or use a <a href="hash-tables.html">hash table</a>.</div>
+</main>
+<div id="site-footer"></div>
+<script src="app.js"></script>
+</body></html>

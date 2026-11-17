@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Linked Lists – DSA Visualised</title><link rel="stylesheet" href="style.css"></head>
+<body>
+<div id="site-header"></div>
+<main class="page">
+<div class="crumbs"><a href="index.html#ds">Data structures</a> › Linked lists</div>
+<h1>🔗 Linked Lists</h1>
+<p class="lead">Items that aren't stored side by side. Each one simply remembers <i>where the next one is</i>.</p>
+
+<div class="callout"><b>Everyday picture:</b> a treasure hunt. You're only given the first clue. That clue tells you where to find the second, and so on, until the last clue says "that's it". To add a new clue at the start, you just write it and point it to the old first clue — nobody else has to move.</div>
+
+<h2>Try it</h2>
+<div class="demo">
+  <h3>A singly linked list</h3>
+  <div class="tagl">head ↓</div>
+  <div class="chain" id="chain"></div>
+  <div class="msg" id="msg">Add, remove or find something, and count the steps.</div>
+  <div class="row">
+    <label>Value <input type="number" id="val" value="23"></label>
+    <button class="btn" id="front">Add to front</button>
+    <button class="btn" id="end">Add to end</button>
+    <button class="btn" id="rem">Remove value</button>
+    <button class="btn" id="find">Find value</button>
+    <button class="btn" id="reset">Reset</button>
+  </div>
+</div>
+
+<h2>How it works</h2>
+<ol class="steps">
+  <li><b>Each node has two parts:</b> a value and a "next" pointer to the following node.</li>
+  <li><b>We only keep hold of the head</b> — the first node. Everything else is reached by following the arrows.</li>
+  <li><b>Adding to the front is instant:</b> make a new node, point it at the old head, call it the new head. No shifting!</li>
+  <li><b>Finding something is slow:</b> there's no "jump to number 5". You must walk from the head, one node at a time.</li>
+</ol>
+
+<h2>Real life</h2>
+<div class="cols">
+  <div class="card"><b>⏮️ Browser history</b><br>Pages chained with "previous" and "next" links (a doubly linked list).</div>
+  <div class="card"><b>🎶 Music player</b><br>Each song knows which comes next, so adding a song in the middle is cheap.</div>
+  <div class="card"><b>🧠 Memory manager</b><br>Operating systems chain together free blocks of memory in linked lists.</div>
+</div>
+
+<h2>Speed at a glance</h2>
+<table class="tbl">
+<tr><th>Operation</th><th>Speed</th><th>Why</th></tr>
+<tr><td>Add / remove at the front</td><td><span class="tag g">O(1)</span></td><td>Only the head pointer changes</td></tr>
+<tr><td>Add at the end</td><td><span class="tag r">O(n)</span></td><td>Must walk to the last node (unless you also keep a "tail")</td></tr>
+<tr><td>Find a value</td><td><span class="tag r">O(n)</span></td><td>Follow arrows one by one</td></tr>
+<tr><td>Read item number k</td><td><span class="tag r">O(n)</span></td><td>No direct jump, unlike an <a href="arrays.html">array</a></td></tr>
+</table>
+
+<div class="callout good"><b>Use it when</b> you add and remove at the ends a lot and rarely need "give me item number k".</div>
+<div class="callout bad"><b>Avoid it when</b> you need fast lookups by position — an array is far better.</div>
+</main>
+<div id="site-footer"></div>
+<script src="app.js"></script>
+<script>
+(() => {
+  const START = [4, 8, 15, 16], MAX = 9;
+  let list = START.slice();
+  const msg = t => $('#msg').innerHTML = t, val = () => +$('#val').value;
+  const draw = (hl = -1, ok = -1) => {
+    $('#chain').innerHTML = list.map((v, i) =>
+      `<div class="node ${i === hl ? 'hl' : ''} ${i === ok ? 'ok' : ''}"><b>${v}</b><i>next</i></div><div class="arrow">→</div>`).join('') + '<div class="node nil">null</div>';
+  };
+  const lock = on => $$('.demo .btn').forEach(b => b.disabled = on);
+  async function walk(until) {            // animate walking; returns [index or -1, steps]
+    let steps = 0;
+    for (let i = 0; i < list.length; i++) {
+      steps++; draw(i); msg(`Visiting node ${i + 1}: value <b>${list[i]}</b>… (${steps} step${steps > 1 ? 's' : ''})`); await sleep(450);
+      if (until(list[i], i)) return [i, steps];
+    }
+    return [-1, steps];
+  }
+  $('#front').onclick = () => {
+    if (list.length >= MAX) return msg('Demo list is full — remove something first.');
+    list.unshift(val()); draw(0, 0);
+    msg(`Added <b>${val()}</b> at the front in <b>1 step</b>. We only changed the head pointer — no other node moved.`);
+  };
+  $('#end').onclick = async () => {
+    if (list.length >= MAX) return msg('Demo list is full — remove something first.');
+    lock(true); const [, steps] = await walk((v, i) => i === list.length - 1);
+    list.push(val()); draw(list.length - 1, list.length - 1);
+    msg(`Added <b>${val()}</b> at the end. We walked <b>${steps}</b> nodes to find the last one first.`); lock(false);
+  };
+  $('#rem').onclick = async () => {
+    lock(true); const [i, steps] = await walk(v => v === val());
+    if (i < 0) { draw(); msg(`<b>${val()}</b> is not in the list. We walked all <b>${steps}</b> nodes to find out.`); }
+    else { list.splice(i, 1); draw(); msg(`Removed <b>${val()}</b> after <b>${steps}</b> steps — then the previous node simply pointed past it.`); }
+    lock(false);
+  };
+  $('#find').onclick = async () => {
+    lock(true); const [i, steps] = await walk(v => v === val());
+    if (i < 0) { draw(); msg(`<b>${val()}</b> is not in the list. We checked all <b>${steps}</b> nodes.`); }
+    else { draw(-1, i); msg(`Found <b>${val()}</b> at node ${i + 1} after <b>${steps}</b> steps.`); }
+    lock(false);
+  };
+  $('#reset').onclick = () => { list = START.slice(); draw(); msg('Reset.'); };
+  draw();
+})();
+</script>
+</body></html>
