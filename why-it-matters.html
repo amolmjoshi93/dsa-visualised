@@ -13,7 +13,7 @@
 <h2>1. Feel the scale</h2>
 <p>Drag the slider to change how many items there are. The bars show how many steps each approach needs (on a log scale — each bar tick is 10× more). The time column assumes a fast computer doing <b>100 million steps per second</b>.</p>
 <div class="demo">
-  <div class="row"><label style="font-size:1rem"><b>Items (n):</b> <input type="range" id="nslider" min="1" max="9" value="5" style="width:260px"> <b id="nlabel" style="color:var(--ink);font-size:1.1rem"></b></label></div>
+  <div class="row"><label style="font-size:1rem"><b>Items (n):</b> <input type="range" id="nslider" min="1" max="9" value="5"> <b id="nlabel" style="color:var(--ink);font-size:1.1rem"></b></label></div>
   <div class="bigo" id="bigo"></div>
   <div class="msg" id="bigomsg"></div>
 </div>
@@ -26,7 +26,7 @@
     <label>List size <input type="range" id="rn" min="10" max="2000" value="500"> <b id="rnlabel"></b></label>
     <button class="btn primary" id="race">🏁 Run the race</button>
   </div>
-  <div class="bigo" id="raceout" style="grid-template-columns:130px 1fr 150px"></div>
+  <div class="bigo race" id="raceout"></div>
   <div class="msg" id="racemsg">Press the button. Try 100 items, then 2000 — watch the gap grow.</div>
 </div>
 

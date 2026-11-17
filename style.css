@@ -150,3 +150,38 @@ svg .clickable{cursor:pointer}
   .bigo .val{grid-column:1/-1;text-align:left;margin-top:-6px}
   .viz-bars{height:210px}
 }
+
+/* ---- mobile / small-screen refinements ---- */
+.bigo.race{grid-template-columns:130px 1fr 150px}
+#nslider,#rn{width:260px;max-width:100%}
+.svgwrap{overflow-x:auto;-webkit-overflow-scrolling:touch;border-radius:12px}
+.svgwrap svg.canvas{display:block;max-height:none}
+@media (max-width:640px){
+  .page{padding:20px 14px 48px}
+  .demo{padding:14px}
+  .top .wrap{padding-left:14px;padding-right:14px}
+  .top nav{width:100%;flex-wrap:nowrap;overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none}
+  .top nav::-webkit-scrollbar{display:none}
+  .top nav a{white-space:nowrap;padding:6px 10px}
+  .btn,.cta{min-height:44px}
+  .btn{padding:9px 14px}
+  .row,.viz-controls{gap:8px}
+  .viz-controls label{flex:1 1 100%;justify-content:space-between}
+  .viz-controls input[type=range]{flex:1;max-width:210px}
+  .viz-bars{gap:1px;padding:24px 4px 0;overflow:hidden}
+  .bar{min-width:2px;border-radius:3px 3px 0 0}
+  .bar span{font-size:10px;left:-6px;right:-6px}
+  .cell{min-width:40px;height:40px}
+  .tbl{font-size:.88rem}
+  .tbl th,.tbl td{padding:8px}
+  .bigo.race{grid-template-columns:80px 1fr}
+  .bigo.race .val{grid-column:1/-1;text-align:left;margin-top:-6px}
+  .stackbox{width:140px}
+  .svgwrap svg.canvas{min-width:540px}
+  .swipe{display:block!important;margin:0 0 8px}
+  .pn{flex-direction:column}
+  .pn a{text-align:center}
+  .callout{padding:12px 14px}
+}
+.demo .row>label{flex-wrap:wrap;max-width:100%}
+.swipe{display:none;margin:0 0 8px}

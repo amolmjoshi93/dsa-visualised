@@ -175,7 +175,7 @@ class SortViz {
   }
   stats() { this.q('.c').textContent = this.c; this.q('.s').textContent = this.s; }
   render(hl = {}) {
-    const show = this.data.length <= 24;
+    const show = this.data.length <= (innerWidth < 640 ? 12 : 24);
     this.bars.forEach((b, i) => {
       b.style.height = (this.data[i] * 0.88) + '%';
       let c = 'bar';
