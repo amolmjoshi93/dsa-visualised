@@ -37,10 +37,18 @@
   <div class="log" id="log"></div>
 </div>
 
+<h2>How it works</h2>
+<ol class="steps">
+  <li><b>Only the top is reachable.</b> Everything below it waits its turn.</li>
+  <li><b>Push</b> puts a new item on top.</li>
+  <li><b>Pop</b> removes and returns the top item — always the most recently added one.</li>
+  <li><b>Peek</b> looks at the top without removing it. All three are instant because only one end is ever touched (an array's end or a linked list's head both work).</li>
+</ol>
+
 <h2>Real life</h2>
 <div class="cols">
   <div class="card"><b>↩️ Undo (Ctrl+Z)</b><br>Every edit is pushed on a stack. Undo pops the most recent one.</div>
-  <div class="card"><b>⬅️ Browser Back button</b><br>Pages you visit are pushed; Back pops the latest.</div>
+  <div class="card"><b>⬅️ Back button</b><br>Back-history is classically modelled as a stack: pages you visit are pushed; Back pops the latest.</div>
   <div class="card"><b>📞 Function calls</b><br>When code calls a function, it's pushed on the "call stack". When it returns, it's popped. (That's what a "stack overflow" is!)</div>
 </div>
 
@@ -56,6 +64,7 @@
 </table></div>
 <p><b>Space:</b> the stack grows by one slot per item, so n items cost O(n). Real programs have a limited "call stack" — recursing too deep fills it up and causes a <i>stack overflow</i>. The bracket checker above uses at most as many slots as there are opening brackets.</p>
 <div class="callout good"><b>Use it when</b> you need to remember things in order and go back through them newest-first.</div>
+<div class="callout bad"><b>Avoid it when</b> you need to look something up in the middle, or process items oldest-first. Use an <a href="arrays.html">array</a>, a <a href="hash-tables.html">hash table</a>, or a <a href="queues.html">queue</a>.</div>
 </main>
 <div id="site-footer"></div>
 <script src="app.js"></script>

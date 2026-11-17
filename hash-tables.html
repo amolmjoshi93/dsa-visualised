@@ -38,7 +38,7 @@
   <div class="card"><b>📱 Contacts</b><br>Type a name, get a number. No scrolling the whole list.</div>
   <div class="card"><b>🔑 Login sessions</b><br>Web servers find your session by a random ID in a hash table.</div>
   <div class="card"><b>⚡ Caches</b><br>"Have I already computed this?" — answered in one lookup.</div>
-  <div class="card"><b>💎 Ruby Hash / Python dict / JS Map</b><br>All of them are hash tables under the hood.</div>
+  <div class="card"><b>💎 Ruby Hash / Python dict / JS Map</b><br>Ruby's <code>Hash</code>, Python's <code>dict</code> and JavaScript's <code>Map</code> (in V8) are all built on hash tables.</div>
 </div>
 
 <h2>Time &amp; space complexity</h2>
@@ -51,7 +51,7 @@
 <tr><td>Items in sorted order</td><td>—</td><td>n/a</td><td>n/a</td></tr>
 <tr><td><b>Space</b> (storing n items)</td><td><span class="tag">O(n)</span></td><td><span class="tag">O(n)</span></td><td><span class="tag">O(n)</span></td></tr>
 </table></div>
-<p><b>Space:</b> O(n) for the entries, <i>plus</i> spare empty buckets. That wasted room is the price of speed: a table kept about half-empty has very few collisions, so lookups stay near O(1). Packing it fuller saves memory but slows everything down.</p>
+<p><b>Space:</b> O(n) for the entries, <i>plus</i> spare empty buckets. That spare room is the price of speed: real tables track their <i>load factor</i> (items ÷ buckets) and, when it gets too high — roughly above 1–2 — double the number of buckets and re-spread everything. Packing buckets fuller saves memory but makes the chains longer and lookups slower.</p>
 <div class="callout good"><b>Use it when</b> you look things up by a key (names, IDs, words) and don't care about order.</div>
 <div class="callout bad"><b>Avoid it when</b> you need things in sorted order or "all keys between A and F" — use a <a href="trees.html">tree</a>.</div>
 </main>

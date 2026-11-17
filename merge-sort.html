@@ -37,7 +37,7 @@
 <h2>Real life</h2>
 <div class="cols">
   <div class="card"><b>🗃️ Sorting huge files</b><br>Data too big for memory is sorted in chunks, and the sorted chunks are merged — that's merge sort.</div>
-  <div class="card"><b>🐍 Real libraries</b><br>Python and Java's default object sorts (Timsort) are built on merging.</div>
+  <div class="card"><b>🐍 Real libraries</b><br>Python's <code>list.sort</code> and Java's sort for objects use Timsort — a hybrid of merge sort and insertion sort. (Since Python 3.11 it merges runs in a smarter order, called Powersort.)</div>
   <div class="card"><b>🧾 Combining sorted feeds</b><br>Merging two sorted lists of transactions into one timeline.</div>
 </div>
 

@@ -25,7 +25,7 @@
 
 <h2>Real life</h2>
 <div class="cols">
-  <div class="card"><b>📚 Standard libraries</b><br>C's <code>qsort</code> and C++'s <code>std::sort</code> (introsort) are quick-sort based.</div>
+  <div class="card"><b>📚 Standard libraries</b><br>C++'s <code>std::sort</code> is typically <i>introsort</i> — quick sort that switches to heap sort if the pivots go bad, plus insertion sort for tiny pieces. (The standard only demands O(n log n); C's <code>qsort</code> may use any algorithm.)</div>
   <div class="card"><b>🔬 Big in-memory data</b><br>It sorts in place and is very cache-friendly, which makes it fast in practice.</div>
   <div class="card"><b>🥇 "Top-k" problems</b><br>A cousin of quick sort (quickselect) finds the median or the 10 best items without fully sorting.</div>
 </div>
@@ -35,7 +35,7 @@
 <tr><th>Case</th><th>Speed</th></tr>
 <tr><td>Best / average</td><td><span class="tag g">O(n log n)</span></td></tr>
 <tr><td>Worst (bad pivots)</td><td><span class="tag r">O(n²)</span></td></tr>
-<tr><td>Extra memory</td><td><span class="tag g">O(log n)</span> (the recursion)</td></tr>
+<tr><td>Extra memory</td><td><span class="tag g">O(log n)</span> on average (the recursion). Worst case <span class="tag r">O(n)</span> deep with bad pivots — real versions recurse into the smaller half first to stay at O(log n).</td></tr>
 <tr><td>Stable?</td><td>No</td></tr>
 </table>
 

@@ -50,6 +50,7 @@
 </table></div>
 <p><b>Space:</b> one slot per waiting item, so O(n). Tip: removing the first item of a plain array shifts everything (O(n)); real queues use a linked list or a "circular buffer" so both ends stay O(1).</p>
 <div class="callout good"><b>Use it when</b> order of arrival matters and fairness is the goal. Queues also power <a href="graphs.html">breadth-first search</a> on graphs.</div>
+<div class="callout bad"><b>Avoid it when</b> urgency should beat arrival order (use a priority queue) or you need to reach into the middle. And don't build one by removing from the front of a plain array on big data — that shifts every item, O(n). Use a linked list or a circular buffer.</div>
 </main>
 <div id="site-footer"></div>
 <script src="app.js"></script>

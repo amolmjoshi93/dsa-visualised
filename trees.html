@@ -52,6 +52,7 @@
 </table></div>
 <p><b>Space:</b> O(n) — each node stores its value plus two child pointers. Walking the tree recursively also needs memory for the current path: about O(log n) if the tree is balanced, up to O(n) if it's lopsided. Self-balancing trees (used in databases) guarantee the O(log n) rows even in the worst case.</p>
 <div class="callout good"><b>Use it when</b> you need fast lookups <i>and</i> want things kept in sorted order, or the data is naturally hierarchical.</div>
+<div class="callout bad"><b>Avoid it when</b> you only ever look things up by exact key and never need order — a <a href="hash-tables.html">hash table</a> is simpler and usually faster. And a plain tree fed already-sorted data turns into a chain; use a self-balancing tree.</div>
 </main>
 <div id="site-footer"></div>
 <script src="app.js"></script>

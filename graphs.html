@@ -51,6 +51,8 @@
 <tr><td>Extra memory during BFS / DFS</td><td><span class="tag">O(V)</span></td><td><span class="tag">O(V)</span></td></tr>
 </table></div>
 <p><b>Space:</b> V = nodes, E = edges. An <i>adjacency list</i> (each node keeps a list of its neighbours) costs O(V + E) — great for sparse graphs like road maps, where each city links to only a few others. An <i>adjacency matrix</i> (a V × V grid) costs O(V²) however few edges exist, but answers "are these two connected?" instantly. BFS and DFS also need O(V) extra memory to remember visited nodes plus the queue or stack.</p>
+<div class="callout good"><b>Use it when</b> the connections between things are the point: routes, networks, dependencies, "who knows whom".</div>
+<div class="callout bad"><b>Avoid it when</b> your data has no meaningful connections — a plain <a href="arrays.html">array</a> or table is simpler. For huge, sparse graphs avoid the adjacency matrix: its O(V²) memory is mostly empty.</div>
 </main>
 <div id="site-footer"></div>
 <script src="app.js"></script>
